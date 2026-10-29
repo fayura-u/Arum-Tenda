@@ -1,0 +1,468 @@
+{
+  "capture_path": "C:\\Users\\fadhe\\.gemini\\antigravity-cli\\brain\\73c92b3c-80f8-4d55-a8f0-a176688846e9\\.system_generated\\steps\\30\\output.txt",
+  "capture_sha256": "7db506318a6922b4f3e2b0ce2efe2b5aaaf01ad42f528c148640390bed1ea1ba",
+  "capture_kind": "browser-scenario",
+  "source_evidence_id": "ev_f85cb93cb9cb75dbf27a0d1dafdfd74031b2024dfdffe0ed24e4622fac6ac918",
+  "capture_completeness": {
+    "status": "incomplete",
+    "equality_eligible": false,
+    "missing_sections": [
+      "events"
+    ],
+    "truncated_sections": []
+  },
+  "output_directory": "C:\\Users\\fadhe\\rea\\axioo_exported_scripts",
+  "analysis_input": {
+    "input_path": "C:\\Users\\fadhe\\rea\\axioo_exported_scripts\\files",
+    "format": "directory"
+  },
+  "scripts": [
+    {
+      "source": {
+        "kind": "scenario-response",
+        "transaction_id": "request-11",
+        "request_sequence": 13,
+        "response_sequence": 98,
+        "status": 200
+      },
+      "url": "https://www.axioo.com/wp-includes/js/jquery/jquery.min.js?scu_version=77",
+      "content": {
+        "state": "unavailable",
+        "reason": "body-size-limit",
+        "message": "Playwright materialized the body before its 65536-byte retained-body budget was checked."
+      }
+    },
+    {
+      "source": {
+        "kind": "scenario-response",
+        "transaction_id": "request-12",
+        "request_sequence": 14,
+        "response_sequence": 50,
+        "status": 200
+      },
+      "url": "https://www.axioo.com/wp-includes/js/jquery/jquery-migrate.min.js?scu_version=77",
+      "content": {
+        "state": "exported",
+        "relative_path": "isolated/source-2-208dfb9f7edf4bb9ae65c5036824cf788ac79a68e7b0dc93c01cd1c76e1162c8.js",
+        "layout": "isolated",
+        "layout_reason": "URL query, fragment, or credentials cannot select a canonical local module.",
+        "sha256": "029e0a2e809fd6b5dbe76abe8b7a74936be306c9a8c27c814c4d44aa54623300",
+        "bytes": 11224,
+        "media_type": "application/javascript",
+        "redacted": false,
+        "representation": "playwright-response-body-bytes"
+      }
+    },
+    {
+      "source": {
+        "kind": "scenario-response",
+        "transaction_id": "request-13",
+        "request_sequence": 15,
+        "response_sequence": 65,
+        "status": 200
+      },
+      "url": "https://www.axioo.com/wp-content/plugins/svg-support/js/min/svgs-inline-min.js?scu_version=77",
+      "content": {
+        "state": "exported",
+        "relative_path": "isolated/source-3-c4289f7e22657733d411c9477a8055fa10ef9aaa0d518e87b9e062ff74d86fd1.js",
+        "layout": "isolated",
+        "layout_reason": "URL query, fragment, or credentials cannot select a canonical local module.",
+        "sha256": "307331ef5bd1dec362969019b66f0dd1d8331e923736c7292206853a7371ac73",
+        "bytes": 820,
+        "media_type": "application/javascript",
+        "redacted": false,
+        "representation": "playwright-response-body-bytes"
+      }
+    },
+    {
+      "source": {
+        "kind": "scenario-response",
+        "transaction_id": "request-14",
+        "request_sequence": 16,
+        "response_sequence": 62,
+        "status": 200
+      },
+      "url": "https://www.axioo.com/wp-content/themes/axioo/js/modernizr-2.8.3.min.js",
+      "content": {
+        "state": "exported",
+        "relative_path": "origins/3a3fc4219e6489297fe482746d447b7318c99bea410a6dc8695f88a591b5e5f2/wp-content/themes/axioo/js/modernizr-2.8.3.min.js",
+        "layout": "url-path",
+        "layout_reason": null,
+        "sha256": "d9b8e3a21226d046c3f3696464f2411d29af8d57f105ce0b49e4b0767d66e751",
+        "bytes": 14745,
+        "media_type": "application/javascript",
+        "redacted": false,
+        "representation": "playwright-response-body-bytes"
+      }
+    },
+    {
+      "source": {
+        "kind": "scenario-response",
+        "transaction_id": "request-15",
+        "request_sequence": 17,
+        "response_sequence": 71,
+        "status": 200
+      },
+      "url": "https://www.axioo.com/wp-content/themes/axioo/js/fontfaceobserver.min.js",
+      "content": {
+        "state": "exported",
+        "relative_path": "origins/3a3fc4219e6489297fe482746d447b7318c99bea410a6dc8695f88a591b5e5f2/wp-content/themes/axioo/js/fontfaceobserver.min.js",
+        "layout": "url-path",
+        "layout_reason": null,
+        "sha256": "2f7604bcba141102c90b182a590ee709a66a6c176d73d260fd7632f3a96d2ee0",
+        "bytes": 5560,
+        "media_type": "application/javascript",
+        "redacted": false,
+        "representation": "playwright-response-body-bytes"
+      }
+    },
+    {
+      "source": {
+        "kind": "scenario-response",
+        "transaction_id": "request-16",
+        "request_sequence": 18,
+        "response_sequence": 163,
+        "status": 200
+      },
+      "url": "https://www.axioo.com/wp-includes/js/wp-emoji-release.min.js?scu_version=77",
+      "content": {
+        "state": "exported",
+        "relative_path": "isolated/source-6-7b2d432d23811ebd6c47e6074ace55bcd4e1f0d47628e20535296d435473ab98.js",
+        "layout": "isolated",
+        "layout_reason": "URL query, fragment, or credentials cannot select a canonical local module.",
+        "sha256": "def5de6254be138b8b35d680d1fdd8b07827d03b8626daebfeeb4157ec330ea7",
+        "bytes": 18181,
+        "media_type": "application/javascript",
+        "redacted": false,
+        "representation": "playwright-response-body-bytes"
+      }
+    },
+    {
+      "source": {
+        "kind": "scenario-response",
+        "transaction_id": "request-18",
+        "request_sequence": 22,
+        "response_sequence": 88,
+        "status": 200
+      },
+      "url": "https://www.axioo.com/wp-content/plugins/contact-form-7/includes/js/scripts.js?scu_version=77",
+      "content": {
+        "state": "exported",
+        "relative_path": "isolated/source-7-50147ef428a09c5d78c2d707f8b6fb8f3535e14f37377c9699498047074f11a8.js",
+        "layout": "isolated",
+        "layout_reason": "URL query, fragment, or credentials cannot select a canonical local module.",
+        "sha256": "d5b503705055cb5b5b7511c4f13bbe6a9d63945427e48808c68b035b223de265",
+        "bytes": 13340,
+        "media_type": "application/javascript",
+        "redacted": false,
+        "representation": "playwright-response-body-bytes"
+      }
+    },
+    {
+      "source": {
+        "kind": "scenario-response",
+        "transaction_id": "request-19",
+        "request_sequence": 23,
+        "response_sequence": 92,
+        "status": 200
+      },
+      "url": "https://www.axioo.com/wp-content/plugins/instagram-feed/js/sb-instagram.min.js?scu_version=77",
+      "content": {
+        "state": "exported",
+        "relative_path": "isolated/source-8-ab8eb10df0a057f7f76c657433bf07e56a7fe6a515a02ad8ce5f93e7e8fa397b.js",
+        "layout": "isolated",
+        "layout_reason": "URL query, fragment, or credentials cannot select a canonical local module.",
+        "sha256": "a9ac9de6e58147a660a132b237cd2f542c8ac788b215151729ec6374ba9a24fe",
+        "bytes": 61338,
+        "media_type": "application/javascript",
+        "redacted": false,
+        "representation": "playwright-response-body-bytes"
+      }
+    },
+    {
+      "source": {
+        "kind": "scenario-response",
+        "transaction_id": "request-20",
+        "request_sequence": 24,
+        "response_sequence": 125,
+        "status": 200
+      },
+      "url": "https://www.axioo.com/wp-content/themes/axioo/js/swiper.min.js?scu_version=77",
+      "content": {
+        "state": "unavailable",
+        "reason": "body-size-limit",
+        "message": "Playwright materialized the body before its 65536-byte retained-body budget was checked."
+      }
+    },
+    {
+      "source": {
+        "kind": "scenario-response",
+        "transaction_id": "request-21",
+        "request_sequence": 25,
+        "response_sequence": 101,
+        "status": 200
+      },
+      "url": "https://www.axioo.com/wp-content/themes/axioo/js/masonry.min.js?scu_version=77",
+      "content": {
+        "state": "exported",
+        "relative_path": "isolated/source-10-97dcfee41fdc6dd55380f283a051dd20e0eb7332dd72ce53afd90c0ebb18d700.js",
+        "layout": "isolated",
+        "layout_reason": "URL query, fragment, or credentials cannot select a canonical local module.",
+        "sha256": "d4ef05a0c20431dfe8ed4cdc87aece5b032428f0e3148b7ff6c21c2b56589301",
+        "bytes": 23817,
+        "media_type": "application/javascript",
+        "redacted": false,
+        "representation": "playwright-response-body-bytes"
+      }
+    },
+    {
+      "source": {
+        "kind": "scenario-response",
+        "transaction_id": "request-22",
+        "request_sequence": 26,
+        "response_sequence": 128,
+        "status": 200
+      },
+      "url": "https://www.axioo.com/wp-content/themes/axioo/js/home.js?scu_version=77",
+      "content": {
+        "state": "exported",
+        "relative_path": "isolated/source-11-c61ac257780830369c7a7e8ea98b0fee5b70bb617a729cafebe9d7d6fde5717a.js",
+        "layout": "isolated",
+        "layout_reason": "URL query, fragment, or credentials cannot select a canonical local module.",
+        "sha256": "2eaa0b0ec022d8e7191696b3b15d56aeaf67e0d0d67a7b6d58e889acc901ed0f",
+        "bytes": 1087,
+        "media_type": "application/javascript",
+        "redacted": false,
+        "representation": "playwright-response-body-bytes"
+      }
+    },
+    {
+      "source": {
+        "kind": "scenario-response",
+        "transaction_id": "request-23",
+        "request_sequence": 27,
+        "response_sequence": 155,
+        "status": 200
+      },
+      "url": "https://www.axioo.com/wp-content/themes/axioo/js/plugins.js?scu_version=77",
+      "content": {
+        "state": "unavailable",
+        "reason": "body-size-limit",
+        "message": "Playwright materialized the body before its 65536-byte retained-body budget was checked."
+      }
+    },
+    {
+      "source": {
+        "kind": "scenario-response",
+        "transaction_id": "request-24",
+        "request_sequence": 28,
+        "response_sequence": 131,
+        "status": 200
+      },
+      "url": "https://www.axioo.com/wp-content/themes/axioo/js/main.js?scu_version=77",
+      "content": {
+        "state": "exported",
+        "relative_path": "isolated/source-13-fd03018c8c693f1692b258e7a163340c0817c740112a087af19b4421b0642183.js",
+        "layout": "isolated",
+        "layout_reason": "URL query, fragment, or credentials cannot select a canonical local module.",
+        "sha256": "2113059ca4ce073a3bd69a12ca0f644176675f0a8537c976304024adb9f07ffb",
+        "bytes": 1340,
+        "media_type": "application/javascript",
+        "redacted": false,
+        "representation": "playwright-response-body-bytes"
+      }
+    },
+    {
+      "source": {
+        "kind": "scenario-response",
+        "transaction_id": "request-25",
+        "request_sequence": 29,
+        "response_sequence": 134,
+        "status": 200
+      },
+      "url": "https://www.axioo.com/wp-content/themes/axioo/js/rellax.min.js?scu_version=77",
+      "content": {
+        "state": "exported",
+        "relative_path": "isolated/source-14-b4e03fa41decec8c2ff7d09b732140f859e70bf693b36b925c66401c5f16e92d.js",
+        "layout": "isolated",
+        "layout_reason": "URL query, fragment, or credentials cannot select a canonical local module.",
+        "sha256": "3162007136ac8de86b3c34a32430493455d81e453ebfe5bb16bd6ca5360eda0b",
+        "bytes": 2173,
+        "media_type": "application/javascript",
+        "redacted": false,
+        "representation": "playwright-response-body-bytes"
+      }
+    },
+    {
+      "source": {
+        "kind": "scenario-response",
+        "transaction_id": "request-26",
+        "request_sequence": 30,
+        "response_sequence": 137,
+        "status": 200
+      },
+      "url": "https://www.axioo.com/wp-content/themes/axioo/js/script-lazyload.js?scu_version=77",
+      "content": {
+        "state": "exported",
+        "relative_path": "isolated/source-15-1ff8fc7c55839ab06d312cb37280e505e3d3fec2c055b35d0f8aa460529b8acf.js",
+        "layout": "isolated",
+        "layout_reason": "URL query, fragment, or credentials cannot select a canonical local module.",
+        "sha256": "e2fa8be8a99c018c5b7ec9c208b1fdf4c844cdcf2c354d9fd2566a603e8eecfc",
+        "bytes": 135,
+        "media_type": "application/javascript",
+        "redacted": false,
+        "representation": "playwright-response-body-bytes"
+      }
+    },
+    {
+      "source": {
+        "kind": "scenario-response",
+        "transaction_id": "request-27",
+        "request_sequence": 31,
+        "response_sequence": 143,
+        "status": 200
+      },
+      "url": "https://www.axioo.com/wp-content/themes/axioo/js/script-home.js?scu_version=77",
+      "content": {
+        "state": "exported",
+        "relative_path": "isolated/source-16-42c1ce81b0bb26d1139f545f618d1cbec626df02ee61f4ed35dd48b594182f2d.js",
+        "layout": "isolated",
+        "layout_reason": "URL query, fragment, or credentials cannot select a canonical local module.",
+        "sha256": "6f094565c09b6ed12705b6c861d0a77acef700bf2445d9bcbfc24c6e43eb2292",
+        "bytes": 4345,
+        "media_type": "application/javascript",
+        "redacted": false,
+        "representation": "playwright-response-body-bytes"
+      }
+    },
+    {
+      "source": {
+        "kind": "scenario-response",
+        "transaction_id": "request-28",
+        "request_sequence": 32,
+        "response_sequence": 146,
+        "status": 200
+      },
+      "url": "https://www.axioo.com/wp-content/themes/axioo/js/ajax-loadmore.js?scu_version=77",
+      "content": {
+        "state": "exported",
+        "relative_path": "isolated/source-17-f2505e30f57f960a119791811e885baa1a2ef7fb316c3f9492798e8c30549391.js",
+        "layout": "isolated",
+        "layout_reason": "URL query, fragment, or credentials cannot select a canonical local module.",
+        "sha256": "e9a8d4c860e7d9b89630776b42a9b6d7ce8da52837f1c22978abac675f44c5f9",
+        "bytes": 3118,
+        "media_type": "application/javascript",
+        "redacted": false,
+        "representation": "playwright-response-body-bytes"
+      }
+    },
+    {
+      "source": {
+        "kind": "scenario-response",
+        "transaction_id": "request-29",
+        "request_sequence": 33,
+        "response_sequence": 152,
+        "status": 200
+      },
+      "url": "https://www.axioo.com/wp-includes/js/wp-embed.min.js?scu_version=77",
+      "content": {
+        "state": "exported",
+        "relative_path": "isolated/source-18-86f3a664321a0a0b766cfc4cfb4ae085c17bd0f264811e372ec2ccb3fb62af3b.js",
+        "layout": "isolated",
+        "layout_reason": "URL query, fragment, or credentials cannot select a canonical local module.",
+        "sha256": "5be614bce53f767993a5f5f14a6badd6aae6bf3af7cbdbf4d31520de49e27991",
+        "bytes": 1426,
+        "media_type": "application/javascript",
+        "redacted": false,
+        "representation": "playwright-response-body-bytes"
+      }
+    },
+    {
+      "source": {
+        "kind": "scenario-response",
+        "transaction_id": "request-32",
+        "request_sequence": 108,
+        "response_sequence": 208,
+        "status": 200
+      },
+      "url": "https://www.google-analytics.com/analytics.js",
+      "content": {
+        "state": "exported",
+        "relative_path": "origins/758eac82f5ed05a45e8d181700cbd90309fc2913ca60f7c960bbc3702220eaf4/analytics.js",
+        "layout": "url-path",
+        "layout_reason": null,
+        "sha256": "f1a61277e3f902f50ab42015d8b07218db9b7601bb0967e54a52bfdcb4fa7e81",
+        "bytes": 52310,
+        "media_type": "text/javascript",
+        "redacted": false,
+        "representation": "playwright-response-body-bytes"
+      }
+    },
+    {
+      "source": {
+        "kind": "scenario-response",
+        "transaction_id": "request-49",
+        "request_sequence": 162,
+        "response_sequence": 212,
+        "status": 200
+      },
+      "url": "https://connect.facebook.net/en_US/sdk.js",
+      "content": {
+        "state": "exported",
+        "relative_path": "origins/a8bf90450f588e2dd2e093cebe54cceef13937aac3a771ffe20ef5c17de50b92/en_US/sdk.js",
+        "layout": "url-path",
+        "layout_reason": null,
+        "sha256": "56c2ba63c22f335eb381c99f432f71e916bbcba9b7f89cdba956bd7f9e9d989f",
+        "bytes": 12459,
+        "media_type": "application/x-javascript; charset=utf-8",
+        "redacted": false,
+        "representation": "playwright-response-body-bytes"
+      }
+    },
+    {
+      "source": {
+        "kind": "scenario-response",
+        "transaction_id": "request-51",
+        "request_sequence": 216,
+        "response_sequence": 226,
+        "status": 200
+      },
+      "url": "https://connect.facebook.net/en_US/bundle/sdk.js/",
+      "content": {
+        "state": "unavailable",
+        "reason": "body-size-limit",
+        "message": "Playwright materialized the body before its 65536-byte retained-body budget was checked."
+      }
+    },
+    {
+      "source": {
+        "kind": "scenario-response",
+        "transaction_id": "request-52",
+        "request_sequence": 220,
+        "response_sequence": 246,
+        "status": 200
+      },
+      "url": "https://www.googletagmanager.com/gtag/js?id=G-YW83J2B8BW&cx=c&_slc=1",
+      "content": {
+        "state": "unavailable",
+        "reason": "body-size-limit",
+        "message": "Playwright materialized the body before its 65536-byte retained-body budget was checked."
+      }
+    }
+  ],
+  "limitations": [
+    "Event sequence records provider receipt order; simultaneous browser causality is not inferred.",
+    "Network content is retained only when selected; Playwright response-body bytes are API results and are not guaranteed to match wire bytes.",
+    "Request bytes are limited to what Playwright exposes; not_exposed does not establish body absence or multipart file coverage.",
+    "Network content reads settle within 5 seconds each and the observer does not request bodies from unfinished responses.",
+    "Captured response-body bytes are the result of Playwright's Response.body() API. Playwright may satisfy that API with a credentialed follow-up load of the request URL when CDP has no body, so transaction and event links do not verify that retained bytes came from the original network transaction.",
+    "Playwright scenario events do not expose request initiator stacks; receipt order does not prove causality.",
+    "Storage values are hashed only after declared-secret redaction.",
+    "Some selected network content was unavailable; per-transaction content states retain the reason.",
+    "Only script bytes retained in this capture are exported. Sources are not refetched or executed, and a response or Debugger source does not prove execution.",
+    "Ordinary unambiguous URL paths preserve relative module layouts by origin, including case-distinct spellings. Query variants, exact path collisions, file/directory prefixes, inline sources, and unrepresentable paths are isolated. A case-distinct pair is isolated only when the destination filesystem cannot store both spellings; the record names that pair. Browser module relationships of isolated paths remain unknown.",
+    "Local JavaScript analysis does not implement browser import maps, root-relative URL resolution, remote URL loading, or browser runtime behavior. It may strip import queries and fragments; isolated variants are not canonical targets.",
+    "Source-map declarations are retained as metadata. No source maps or missing dependencies are fetched or reconstructed.",
+    "Scenario response bytes preserve the output of Playwright's Response.body() API; any source-body provenance caveat from the capture is retained in this manifest. Debugger sources are the exposed text encoded as UTF-8. Redacted bytes are exported exactly as retained, and may no longer parse as JavaScript."
+  ]
+}
