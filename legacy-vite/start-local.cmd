@@ -1,5 +1,6 @@
 @echo off
 setlocal
+pushd "%~dp0.."
 where npm.cmd >nul 2>nul
 if errorlevel 1 (
   echo npm was not found. Install Node.js, then try again.
@@ -14,5 +15,6 @@ if not exist node_modules\vite\bin\vite.js (
     exit /b 1
   )
 )
-call npm.cmd run dev
+call npm.cmd run vite:dev
+popd
 pause

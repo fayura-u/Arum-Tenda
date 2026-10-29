@@ -1,29 +1,76 @@
-# Arum Tenda — frontend prototype
+<p align="center">
+  <img src="docs/readme-banner.svg" alt="Arum Tenda — ruang indah untuk hari istimewa" width="100%">
+</p>
 
-Static company-profile prototype made with HTML, CSS, and vanilla JavaScript. It has no backend or database. Run it with Vite:
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-App_Router-111827?logo=nextdotjs" alt="Next.js App Router">
+  <img src="https://img.shields.io/badge/React-client_components-149eca?logo=react&logoColor=white" alt="React client components">
+  <img src="https://img.shields.io/badge/Vite-legacy_available-646cff?logo=vite&logoColor=white" alt="Vite legacy available">
+</p>
 
-1. Install Node.js (npm is included).
-2. From this folder, run `npm.cmd install` once in PowerShell. (Use `npm` in Command Prompt.)
-3. Run `npm.cmd run dev` and open the local URL printed by Vite (normally <http://localhost:5173>).
+<p align="center"><b>Company profile dan katalog penyewaan tenda.</b><br>Frontend prototipe Arum Tenda, sedang dalam migrasi dari Vite ke Next.js.</p>
 
-On Windows, you can also double-click `start-local.cmd`; it installs dependencies if needed and starts Vite.
+## ✨ Tentang proyek
 
-Use `npm run build` to create the production files in `dist/`, or `npm run preview` to preview that build. `node serve-local.js` remains available as a simple static-server fallback on port 8000.
+Arum Tenda membantu calon pelanggan menjelajahi layanan, melihat katalog dan galeri, mencoba simulasi warna tenda, lalu menghubungi bisnis melalui WhatsApp. Versi Next.js menjadi aplikasi utama yang sedang disiapkan; versi Vite tetap tersedia sebagai pembanding selama migrasi.
 
-## Prototype features
+## 🧭 Halaman
 
-- Landing page and company introduction.
-- Rental catalog with sample tents, tableware, glassware, event equipment, indicative prices, categories, and photo URLs.
-- WhatsApp order links with prefilled messages.
-- Example event gallery with Instagram profile links.
-- Clickable catalog item details, with tent-canopy color and scene preview inside tent product details.
-- Mobile quick navigation that highlights the current section and scrolls directly to About, Catalog, Gallery, or Color Preview.
-- Catalog editor for adding, changing, or removing products. Data is saved to this browser's `localStorage` only.
+| Rute | Isi |
+| --- | --- |
+| `/` | Beranda dan pengenalan layanan |
+| `/tentang` | Profil Arum Tenda |
+| `/katalog` | Pilihan tenda dan perlengkapan |
+| `/galeri` | Inspirasi dekorasi acara |
+| `/simulasi` | Pratinjau jenis dan warna tenda |
+| `/kontak` | Informasi dan jalur kontak |
 
-## Before using for a real business
+## 🚀 Jalankan aplikasi
 
-Update `WA_NUMBER` and `INSTAGRAM_URL` near the top of `app.js`. Replace the sample catalog prices and image URLs in `defaultProducts`, and replace the sample gallery and story images in `index.html`. Prices and all photos are illustrative; photos, fonts, and Bootstrap Icons load from external services and need an internet connection.
+**Next.js** — jalur migrasi utama:
 
-Instagram does not sync automatically in this static prototype. Automatic feed sync requires an Instagram professional account, API access/token handling, and a backend. The tent preview changes the color of an illustrative canopy overlay against sample event photos; it is not a precise material/color proof. Catalog edits are local to one browser and are not shared between devices.
+```powershell
+npm.cmd install
+npm.cmd run dev
+```
 
-The older exported scripts remain in `files/` for reference and are not used by this prototype.
+Buka <http://localhost:3000>. Untuk membuat build dan menjalankan server production lokal:
+
+```powershell
+npm.cmd run build
+npm.cmd start
+```
+
+**Vite** — versi pembanding:
+
+```powershell
+npm.cmd run vite:dev
+```
+
+Gunakan alamat yang dicetak Vite (biasanya <http://localhost:5173>). Perintah `npm.cmd run vite:build` dan `npm.cmd run vite:preview` tersedia untuk build dan pratinjau versi lama.
+
+## 🧩 Struktur proyek
+
+```text
+app/          Rute Next.js dan komponen halaman
+styles/       CSS bersama untuk Next.js dan Vite
+shared/       Kode browser bersama, termasuk latar Satin
+legacy-vite/  Sumber Vite lama dan helper untuk menjalankannya
+docs/         Aset dokumentasi proyek
+```
+
+## 🎪 Fitur prototipe
+
+- Katalog dengan filter kategori, detail produk, jumlah pesanan, dan tautan WhatsApp.
+- Pengelolaan katalog di browser: tambah, ubah, dan hapus data.
+- Galeri dengan filter dan transisi GSAP Flip.
+- Simulasi jenis tenda dan pilihan warna.
+- Navigasi responsif dan latar Satin.
+
+Perubahan katalog tersimpan di `localStorage` browser ini menggunakan kunci `arum-tenda-catalog-v1` dan `arum-tenda-equipment-seeded-v1`. Data tersebut belum dibagikan antarperangkat atau terhubung ke backend.
+
+## 📝 Sebelum digunakan sungguhan
+
+Nomor WhatsApp `6281234567890`, harga katalog, foto Unsplash, dan konten galeri masih berupa contoh. Perbarui data bisnis sebelum dipakai untuk menerima pesanan. Google Fonts, Bootstrap Icons, foto Unsplash, dan dependensi shader Satin memerlukan koneksi internet.
+
+Proyek saat ini menggunakan server Next.js. Target hosting dan konfigurasi ekspor statis belum ditentukan.

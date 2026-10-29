@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+  <title id="title">Arum Tenda</title>
+  <desc id="desc">Ruang indah untuk hari istimewa — company profile dan katalog tenda.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#172aa8"/>
+      <stop offset="1" stop-color="#314bd0"/>
+    </linearGradient>
+    <linearGradient id="cloth" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fffdf5"/>
+      <stop offset="1" stop-color="#e9e6d9"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="360" rx="24" fill="url(#sky)"/>
+  <circle cx="1020" cy="82" r="40" fill="#f05a3a"/>
+  <circle cx="1020" cy="82" r="57" fill="none" stroke="#ffffff" stroke-opacity=".2"/>
+  <path d="M0 278c155-38 287-25 421 3s247 27 389-2 253-36 390-6v87H0z" fill="#ffffff" fill-opacity=".06"/>
+  <path d="M0 310c150-25 284-16 416 7s270 20 405-4 257-26 379-8v55H0z" fill="#101d79" fill-opacity=".25"/>
+  <g transform="translate(660 82)">
+    <path d="M34 148 202 25l169 123-22 15H57z" fill="url(#cloth)"/>
+    <path d="m202 25 9 138h-18z" fill="#c9c9c1"/>
+    <path d="m34 148 168-123 169 123" fill="none" stroke="#fffdf5" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M57 163h292v73H57z" fill="#fffdf5" fill-opacity=".18" stroke="#fffdf5" stroke-opacity=".72" stroke-width="2"/>
+    <path d="M57 163h292l-7 20-10-11-10 11-10-11-10 11-10-11-10 11-10-11-10 11-10-11-10 11-10-11-10 11-10-11-10 11-10-11-10 11-10-11-10 11-10-11-10 11-10-11-10 11z" fill="#f05a3a"/>
+    <path d="M93 173v63m218-63v63M120 174l82 61 82-61" fill="none" stroke="#fffdf5" stroke-opacity=".65" stroke-width="2"/>
+    <path d="M202 25v138" stroke="#fffdf5" stroke-opacity=".75" stroke-width="2"/>
+  </g>
+  <g fill="#fffdf5" fill-opacity=".72">
+    <circle cx="584" cy="116" r="3"/><circle cx="622" cy="200" r="2"/><circle cx="1086" cy="164" r="3"/>
+    <path d="M1094 226v12m-6-6h12" stroke="#fffdf5" stroke-width="2" stroke-linecap="round"/>
+    <path d="M605 71v10m-5-5h10" stroke="#fffdf5" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <g font-family="Arial, Helvetica, sans-serif" fill="#fffdf5">
+    <text x="76" y="106" font-size="13" letter-spacing="4" opacity=".8">COMPANY PROFILE · NEXT.JS</text>
+    <text x="72" y="184" font-family="Georgia, serif" font-size="58" letter-spacing="-2">ARUM TENDA</text>
+    <text x="76" y="224" font-size="17" opacity=".88">Ruang indah untuk hari istimewa.</text>
+    <rect x="76" y="262" width="152" height="34" rx="17" fill="#f05a3a"/>
+    <text x="94" y="284" font-size="11" font-weight="700" letter-spacing="1.5">EXPLORE THE SITE ↗</text>
+  </g>
+</svg>

@@ -1,4 +1,7 @@
 $ErrorActionPreference = 'Stop'
+$legacyRoot = $PSScriptRoot
+Push-Location $legacyRoot
+try {
 $port = 8000
 $python = Get-Command python -ErrorAction SilentlyContinue
 if (-not $python) { $python = Get-Command py -ErrorAction SilentlyContinue }
@@ -12,4 +15,7 @@ if ($python.Name -eq 'py.exe') {
     & $python.Source -3 -m http.server $port --bind 127.0.0.1
 } else {
     & $python.Source -m http.server $port --bind 127.0.0.1
+}
+} finally {
+    Pop-Location
 }
