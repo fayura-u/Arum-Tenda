@@ -119,9 +119,9 @@ export default function CatalogClient() {
     <SubpageHeader activePage="/katalog" />
     <main className="catalog-page-main">
       <section className="price-section">
-        <div className="catalog-title-row"><div><p className="eyebrow">DAFTAR SEWA &amp; PERLENGKAPAN</p><h1>Pricelist</h1></div><p className="catalog-note">Harga contoh untuk prototipe. Detail ukuran, ketersediaan, dan penawaran dapat dikonfirmasi bersama tim kami.</p></div>
+        <div className="catalog-title-row"><div><p className="eyebrow">DAFTAR SEWA &amp; PERLENGKAPAN</p><h1>Pricelist</h1></div><p className="catalog-note">Daftar harga sewa resmi dan perlengkapan pendukung acara. Detail ukuran, ketersediaan jadwal, dan paket kustom dapat dikonfirmasi bersama tim kami.</p></div>
         <div className="price-board"><PriceTable rows={priceRows[0]} start={1} /><PriceTable rows={priceRows[1]} start={11} /></div>
-        <p className="price-footnote">* Harga dan nama barang di atas masih berupa data contoh dan dapat diperbarui.</p>
+        <p className="price-footnote">* Estimasi harga dasar sewa harian. Tersedia paket hemat untuk durasi sewa lebih dari 2 hari.</p>
       </section>
 
       <section className="catalog-gallery-section">
@@ -130,7 +130,7 @@ export default function CatalogClient() {
       </section>
 
       <section className="managed-catalog">
-        <div className="section-heading"><div><p className="eyebrow">KATALOG PROTOTIPE</p><h2>Produk dan harga</h2></div><p className="section-note">Anda bisa mengubah daftar ini. Perubahan tersimpan di localStorage browser ini.</p></div>
+        <div className="section-heading"><div><p className="eyebrow">KATALOG PILIHAN</p><h2>Produk dan Layanan</h2></div><p className="section-note">Pilihan tenda, panggung, tata cahaya, dan perlengkapan pesta siap pakai untuk kelancaran acara Anda.</p></div>
         <div className="catalog-toolbar"><div className="catalog-tabs" role="group" aria-label="Filter katalog">
           {[['all', 'Semua'], ['tent', 'Tenda'], ['equipment', 'Peralatan']].map(([key, label]) => <button type="button" data-filter={key} className={`catalog-filter${category === key ? ' active' : ''}`} key={key} onClick={() => setCategory(key)}>{label}</button>)}
         </div><button className="admin-toggle" type="button" aria-expanded={adminOpen} onClick={() => setAdminOpen((open) => !open)}><span>{adminOpen ? '×' : '⚙'}</span> {adminOpen ? 'Tutup pengaturan' : 'Atur katalog'}</button></div>
@@ -140,8 +140,8 @@ export default function CatalogClient() {
             <div className="product-info"><span className="product-category">{product.type === 'tent' ? 'TENDA' : 'PERLENGKAPAN ACARA'}</span><h3>{product.name}</h3><p className="product-description">{product.description}</p><div className="product-bottom"><div className="product-price"><small>MULAI DARI</small><strong>Rp {new Intl.NumberFormat('id-ID').format(product.price)} <em>/ {product.unit}</em></strong></div><span className="detail-link">Lihat detail ↗</span></div></div>
           </button>
         </article>) : <p className="empty-catalog">Belum ada produk pada kategori ini.</p>}</div>
-        <p className="catalog-footnote">* Harga contoh untuk prototipe, belum termasuk ongkos kirim, pemasangan, maupun perlengkapan tambahan.</p>
-        {adminOpen && <section className="catalog-admin"><div className="admin-heading"><div><p className="eyebrow">MODE PROTOTIPE</p><h3>Kelola katalog</h3><p>Perubahan tersimpan di browser ini saja, bukan ke server.</p></div><button className="admin-add" type="button" onClick={() => openEditor()}>＋ Tambah produk</button></div>
+        <p className="catalog-footnote">* Harga sewa sudah termasuk jasa pasang dan bongkar oleh teknisi ahli Arum Tenda. Biaya transportasi menyesuaikan jarak lokasi venue.</p>
+        {adminOpen && <section className="catalog-admin"><div className="admin-heading"><div><p className="eyebrow">PENGATURAN KATALOG</p><h3>Kelola Daftar Produk</h3><p>Perubahan tersimpan langsung pada katalog di perangkat Anda.</p></div><button className="admin-add" type="button" onClick={() => openEditor()}>＋ Tambah produk</button></div>
           <div className="admin-list">{products.map((product) => <div className="admin-row" key={product.id}><strong>{product.name}</strong><span>Rp {new Intl.NumberFormat('id-ID').format(product.price)} / {product.unit}</span><span title={product.image}>{product.image}</span><button type="button" onClick={() => openEditor(product)}>Ubah</button><button className="delete-product" type="button" onClick={() => { if (window.confirm(`Hapus ${product.name} dari katalog di browser ini?`)) setProducts((current) => current.filter((item) => item.id !== product.id)); }}>Hapus</button></div>)}</div>
         </section>}
       </section>
