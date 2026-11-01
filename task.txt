@@ -1,0 +1,116 @@
+
+
+FASE 1: Arsitektur Database & Relasi (PostgreSQL / Supabase)
+
+Tugas backend: Merancang skema tabel relasional, constraint data, dan integritas cascade.
+
+1. Membuat Tabel Relasional via Migrasi SQL:
+   * categories: id (UUID PK), name (VARCHAR), slug (VARCHAR UNIQUE), order_position (INT).
+   * products: id (UUID PK), category_id (FK), name (VARCHAR), slug (VARCHAR UNIQUE), description (TEXT), is_active (BOOLEAN DEFAULT true), created_at, updated_at.
+   * product_prices (Tabel Pricelist Dealer):
+     * id (UUID PK), product_id (FK), spec_name (VARCHAR) (misal: "Ukuran 4x6 m" / "Roder VIP"), price (BIGINT), unit (VARCHAR) (m² / hari / set), min_order (INT DEFAULT 1), notes (TEXT), order_position (INT).
+   * product_colors (Varian Warna & Gambar):
+     * id (UUID PK), product_id (FK), color_name (VARCHAR) (Ivory, Emerald, Terracotta), hex_code (VARCHAR(7)) (#233729), image_url (TEXT), order_position (INT).
+   * gallery_items: id (UUID PK), title (VARCHAR), tent_type (VARCHAR), image_url (TEXT), instagram_url (TEXT), is_featured (BOOLEAN DEFAULT false), created_at.
+2. Menetapkan Integritas Data & Cascade:
+   * Pasang ON DELETE CASCADE pada product_prices dan product_colors terhadap products(id). Saat produk dihapus, baris harga dan varian warnanya terhapus otomatis secara atomic.
+3. Optimasi Indeks Database:
+   * Buat INDEX idx_products_category ON products(category_id).
+   * Buat INDEX idx_prices_product ON product_prices(product_id).
+   * Buat INDEX idx_colors_product ON product_colors(product_id).
+   * Buat INDEX idx_gallery_type ON gallery_items(tent_type).
+
+---
+
+FASE 2: Keamanan Data & Storage (RLS & Buckets)
+
+Tugas backend: Memastikan data dan file tidak bisa dibobol pihak luar.
+
+1. Konfigurasi Row Level Security (RLS):
+   * Aktifkan RLS di seluruh tabel: ALTER TABLE ... ENABLE ROW LEVEL SECURITY;.
+   * Kebijakan Publik (anon): Hanya izin SELECT untuk baris dengan is_active = true.
+   * Kebijakan Admin (authenticated): Izin penuh (ALL -> SELECT, INSERT, UPDATE, DELETE) khusus user dengan role admin/terautentikasi.
+2. Setup Supabase Storage Bucket:
+   * Bikin bucket bernama arum-media dengan akses Public: true.
+   * Pasang RLS pada tabel storage.objects:
+     * Publik hanya bisa SELECT (membaca gambar).
+     * Hanya admin terautentikasi yang bisa INSERT, UPDATE, DELETE.
+   * Batasi tipe file MIME hanya image/jpeg, image/png, image/webp dan ukuran maksimal 5MB per file.
+
+---
+
+FASE 3: Server-Side Client & Kontrak Validasi Data
+
+Tugas backend: Menghubungkan Next.js ke Supabase secara aman dan membuat pagar validasi.
+
+1. Instalasi & Inisialisasi Klien SSR:
+   * Install @supabase/ssr dan @supabase/supabase-js.
+   * Buat utility klien terisolasi:
+     * utils/supabase/server.ts: Klien Supabase untuk Server Component & Server Action berbasis cookies HTTP-only.
+     * utils/supabase/middleware.ts: Helper penyegar sesi auth di level edge/network.
+2. Membuat Kontrak Validasi Data (Zod Schema):
+   * Buat file schema validasi backend (lib/validations/catalog.ts):
+     * ProductFormSchema: Validasi teks nama, slug, deskripsi, array prices (tiap baris wajib punya nama spek & harga positif), dan array colors (nama warna, regex format hex #xxxxxx, URL gambar).
+     * GalleryFormSchema: Validasi tipe tenda, judul foto, URL gambar, dan validasi format tautan Instagram.
+
+---
+
+FASE 4: Server Actions & Mutasi Backend (CRUD Engine)
+
+Tugas backend: Memproses logika bisnis tanpa bergantung pada API eksternal.
+
+1. Media Upload Handler:
+   * Buat server action uploadProductImage(formData: FormData).
+   * Ekstrak file buffer, generate nama file unik (crypto.randomUUID() + .webp), unggah ke bucket Supabase Storage, dan kembalikan Public URL. (1/2)
+2. Atomic Product Mutation:
+   * createProductAction(data): Validasi Zod -> Insert ke products -> Batch insert ke product_prices -> Batch insert ke product_colors.
+   * updateProductAction(id, data): Update data dasar produk -> Sinkronisasi (upsert/delete) baris harga dan varian warna terkait.
+   * deleteProductAction(id): Hapus produk (cascade otomatis menghapus relasi di database) + hapus aset foto terkait di Storage bucket.
+3. Gallery Mutation:
+   * createGalleryItemAction(data), deleteGalleryItemAction(id).
+4. On-Demand Cache Invalidation:
+   * Di baris akhir setiap aksi mutasi yang sukses, panggil:
+     * revalidatePath('/katalog')
+     * revalidatePath('/galeri')
+     * revalidatePath('/') (untuk section preview di beranda).
+
+---
+
+FASE 5: Lapisan Pengambilan Data Publik (Read Layer / Queries)
+
+Tugas backend: Menyediakan fungsi query data yang bersih, efisien, dan ramah SEO untuk dipakai Server Component.
+
+1. getCatalogProducts():
+   * Query Supabase dengan Eager Loading / Join:
+     ts
+     const { data } = await supabase
+       .from('products')
+       .select('*, prices:product_prices(*), colors:product_colors(*)')
+       .eq('is_active', true)
+       .order('created_at', { ascending: false });
+     
+2. getProductBySlug(slug: string):
+   * Mengambil 1 produk spesifik lengkap dengan seluruh varian warna dan tabel spek harganya.
+3. getGalleryItems(category?: string):
+   * Query foto galeri dengan filter opsional berdasarkan jenis tenda (transparan, kerut, blukat, piramid).
+
+---
+
+FASE 6: Autentikasi, Middleware, & Webhook / Cron
+
+Tugas backend: Mengamankan pintu masuk CMS dan otomatisasi data eksternal.
+
+1. Next.js Edge Middleware (middleware.ts):
+   * Intersep seluruh request yang menuju path /admin/*.
+   * Panggil supabase.auth.getUser(). Jika tidak ada sesi valid, lempar HTTP 307 Redirect ke /login.
+2. Auth Server Actions:
+   * loginAdminAction(formData): Validasi kredensial via supabase.auth.signInWithPassword().
+   * logoutAdminAction(): Hancurkan session cookie via supabase.auth.signOut().
+3. Sinkronisasi Feed Instagram (Route Handler):
+   * Buat endpoint app/api/cron/sync-instagram/route.ts:
+     * Dilindungi dengan Secret Bearer Token di request header.
+     * Mengambil feed media terbaru dari Meta Graph API.
+     * Melakukan upsert ke tabel gallery_items.
+     * Mentargetkan eksekusi via Supabase Cron (pg_cron) atau Vercel Cron tiap 1x sehari.
+
+---

@@ -6,6 +6,7 @@ const links = [
   ['Katalog', '/katalog'],
   ['Galeri', '/galeri'],
   ['Simulasi Tenda', '/simulasi'],
+  ['Admin CMS', '/admin'],
 ];
 
 export default function SubpageFooter({ activePage, note = '' }) {

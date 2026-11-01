@@ -343,6 +343,7 @@ export default function HomePageClient() {
             </div>
             <div className="footer-nav-col">
               <Link href="/katalog">KATALOG</Link>
+              <Link href="/admin">CMS ADMIN</Link>
               <a href={whatsappHref} target="_blank" rel="noreferrer">WHATSAPP ↗</a>
             </div>
           </div>

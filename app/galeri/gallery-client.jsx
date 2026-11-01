@@ -9,7 +9,7 @@ import SubpageFooter from '../components/subpage-footer';
 gsap.registerPlugin(Flip);
 
 const instagramUrl = 'https://www.instagram.com/arumtenda/';
-const galleryItems = [
+const defaultGalleryItems = [
   ['Pesta di ruang yang hangat', 'Transparan', 'photo-1519167758481-83f550bb49b3'],
   ['Detail dekorasi untuk jamuan', 'Kerut', 'photo-1464366400600-7168b8af9bc3'],
   ['Perayaan bersama keluarga', 'Blukat', 'photo-1511795409834-ef04bbd61622'],
@@ -28,7 +28,7 @@ const galleryItems = [
   index,
 }));
 
-const InteractiveGallery = memo(function InteractiveGallery({ filterRef }) {
+const InteractiveGallery = memo(function InteractiveGallery({ filterRef, galleryItems }) {
   const gridRef = useRef(null);
   const modalRef = useRef(null);
   const modalMediaRef = useRef(null);
@@ -99,10 +99,15 @@ const InteractiveGallery = memo(function InteractiveGallery({ filterRef }) {
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
       if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`;
       document.body.classList.add('gallery-modal-open');
-      gsap.set(image, { willChange: 'transform' });
-      gsap.set(modal, { autoAlpha: 1 });
-      Flip.from(state, { duration: 0.7, ease: 'power1.inOut' });
-      gsap.to(overlay, { autoAlpha: 0.65, duration: 0.35 });
+      gsap.to([modal, overlay], { autoAlpha: 1, duration: 0.45, ease: 'power2.out' });
+      Flip.from(state, {
+        duration: 0.8,
+        ease: 'power2.out',
+        absolute: true,
+        onComplete: () => {
+          modal.querySelector('.gallery-modal-close')?.focus({ preventScroll: true });
+        },
+      });
     }
 
     const imageHandlers = images.map((image, index) => {
@@ -133,7 +138,7 @@ const InteractiveGallery = memo(function InteractiveGallery({ filterRef }) {
       document.body.classList.remove('gallery-modal-open');
       document.body.style.paddingRight = previousBodyPaddingRight;
     };
-  }, [filterRef]);
+  }, [filterRef, galleryItems]);
 
   return <>
     <div className="event-gallery-grid boxes-container" id="event-gallery-grid" ref={gridRef} aria-live="polite">
@@ -148,15 +153,25 @@ const InteractiveGallery = memo(function InteractiveGallery({ filterRef }) {
   </>;
 });
 
-export default function GalleryClient() {
+export default function GalleryClient({ initialItems }) {
   const filterRef = useRef(null);
+
+  const galleryItems = (initialItems && initialItems.length > 0)
+    ? initialItems.map((item, index) => ({
+        title: item.title,
+        type: item.tent_type,
+        image: item.image_url,
+        postUrl: item.instagram_url || instagramUrl,
+        index,
+      }))
+    : defaultGalleryItems;
 
   return <div className="subpage">
     <SubpageHeader activePage="/galeri" />
     <main className="gallery-page-main">
       <div className="gallery-page-heading"><div><p className="eyebrow">INSPIRASI ACARA ARUM TENDA</p><h1>Galeri Tenda</h1></div><label className="gallery-filter-label" htmlFor="gallery-filter"><span>JENIS TENDA</span><select id="gallery-filter" ref={filterRef} defaultValue="all"><option value="all">Semua jenis</option><option value="transparan">Transparan</option><option value="kerut">Kerut</option><option value="blukat">Blukat</option><option value="piramid">Piramid</option></select></label></div>
       <p className="gallery-page-note">Kumpulan suasana dan inspirasi untuk membantu Anda membayangkan acara yang ingin disiapkan.</p>
-      <InteractiveGallery filterRef={filterRef} />
+      <InteractiveGallery filterRef={filterRef} galleryItems={galleryItems} />
     </main>
     <SubpageFooter activePage="/galeri" />
   </div>;
