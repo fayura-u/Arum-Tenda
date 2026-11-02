@@ -839,9 +839,15 @@
 }
 
 .admin-nav-item.active {
+  position: relative;
+  z-index: 2;
+  width: calc(100% + 10px);
+  margin-right: -10px;
+  padding-right: 23px;
+  border-radius: 24px 0 0 24px;
   background: #fff;
   color: #104bf5;
-  box-shadow: 0 5px 14px rgba(8, 43, 154, 0.13);
+  box-shadow: none;
 }
 
 .admin-nav-icon {
@@ -1189,6 +1195,32 @@
 
   .admin-sidebar {
     border-radius: 18px 18px 0 0;
+  }
+
+  .admin-nav {
+    gap: 4px;
+    padding: 10px 14px 0;
+  }
+
+  .admin-nav-item {
+    width: auto;
+    min-height: 42px;
+    flex: 0 0 auto;
+    justify-content: flex-start;
+    gap: 10px;
+    margin: 0;
+    padding: 8px 12px;
+    border-radius: 12px 12px 0 0;
+    font-size: 11px;
+  }
+
+  .admin-nav-item.active {
+    width: auto;
+    margin: 0 0 -1px;
+    padding-right: 12px;
+    border-radius: 12px 12px 0 0;
+    background: #fff;
+    box-shadow: none;
   }
 
   .admin-content {
