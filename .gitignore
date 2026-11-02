@@ -10,3 +10,7 @@ legacy-vite/dist/
 
 # TypeScript
 *.tsbuildinfo
+
+# Project notes & tasks
+task.txt
+*.txt
