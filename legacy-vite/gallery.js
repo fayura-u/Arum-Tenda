@@ -18,7 +18,7 @@ const galleryItems = [
   title,
   type,
   image: `https://images.unsplash.com/${photo}?auto=format&fit=crop&w=1100&q=84`,
-  postUrl: `https://www.instagram.com/arumtenda/`,
+  postUrl: `https://www.instagram.com/arumtendapbg/`,
   index,
 }));
 

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 const whatsappNumber = '6281234567890';
-const instagramUrl = 'https://www.instagram.com/arumtenda/';
+const instagramUrl = 'https://www.instagram.com/arumtendapbg/';
 
 const pages = [
   ['Beranda', '/', '00'],

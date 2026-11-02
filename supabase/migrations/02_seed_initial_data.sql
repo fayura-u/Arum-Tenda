@@ -135,11 +135,11 @@ BEGIN
 
     INSERT INTO public.gallery_items (title, tent_type, image_url, instagram_url, is_featured)
     VALUES
-        ('Pesta di ruang yang hangat', 'transparan', 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1100&q=84', 'https://www.instagram.com/arumtenda/', true),
-        ('Detail dekorasi untuk jamuan', 'kerut', 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1100&q=84', 'https://www.instagram.com/arumtenda/', true),
-        ('Perayaan bersama keluarga', 'blukat', 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1100&q=84', 'https://www.instagram.com/arumtenda/', false),
-        ('Ruang terbuka untuk berkumpul', 'piramid', 'https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=1100&q=84', 'https://www.instagram.com/arumtenda/', true),
-        ('Tata meja untuk hari istimewa', 'transparan', 'https://images.unsplash.com/photo-1493857671505-72967e2e2760?auto=format&fit=crop&w=1100&q=84', 'https://www.instagram.com/arumtenda/', false),
-        ('Warna dan detail perayaan', 'kerut', 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1100&q=84', 'https://www.instagram.com/arumtenda/', false);
+        ('Pesta di ruang yang hangat', 'transparan', 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1100&q=84', 'https://www.instagram.com/arumtendapbg/', true),
+        ('Detail dekorasi untuk jamuan', 'kerut', 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1100&q=84', 'https://www.instagram.com/arumtendapbg/', true),
+        ('Perayaan bersama keluarga', 'blukat', 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1100&q=84', 'https://www.instagram.com/arumtendapbg/', false),
+        ('Ruang terbuka untuk berkumpul', 'piramid', 'https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=1100&q=84', 'https://www.instagram.com/arumtendapbg/', true),
+        ('Tata meja untuk hari istimewa', 'transparan', 'https://images.unsplash.com/photo-1493857671505-72967e2e2760?auto=format&fit=crop&w=1100&q=84', 'https://www.instagram.com/arumtendapbg/', false),
+        ('Warna dan detail perayaan', 'kerut', 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1100&q=84', 'https://www.instagram.com/arumtendapbg/', false);
 
 END $$;

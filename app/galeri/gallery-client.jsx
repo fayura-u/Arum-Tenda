@@ -8,7 +8,7 @@ import SubpageFooter from '../components/subpage-footer';
 
 gsap.registerPlugin(Flip);
 
-const instagramUrl = 'https://www.instagram.com/arumtenda/';
+const instagramUrl = 'https://www.instagram.com/arumtendapbg/';
 const defaultGalleryItems = [
   ['Pesta di ruang yang hangat', 'Transparan', 'photo-1519167758481-83f550bb49b3'],
   ['Detail dekorasi untuk jamuan', 'Kerut', 'photo-1464366400600-7168b8af9bc3'],

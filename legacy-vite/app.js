@@ -1,5 +1,5 @@
 const WA_NUMBER = '6281234567890'; // Ganti dengan nomor WhatsApp bisnis, kode negara tanpa tanda +.
-const INSTAGRAM_URL = 'https://www.instagram.com/arumtenda/'; // Ganti dengan akun Instagram yang benar.
+const INSTAGRAM_URL = 'https://www.instagram.com/arumtendapbg/'; // Ganti dengan akun Instagram yang benar.
 const STORAGE_KEY = 'arum-tenda-catalog-v1';
 const EQUIPMENT_SEED_KEY = 'arum-tenda-equipment-seeded-v1';
 
