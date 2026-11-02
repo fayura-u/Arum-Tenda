@@ -32,6 +32,14 @@ export async function loginAdminAction(formData: FormData): Promise<ActionRespon
       };
     }
 
+    if (data.user.app_metadata?.role !== 'admin') {
+      await supabase.auth.signOut();
+      return {
+        success: false,
+        error: 'Akun ini belum diberi akses Admin. Hubungi pemilik situs.',
+      };
+    }
+
     revalidatePath('/', 'layout');
 
     return {

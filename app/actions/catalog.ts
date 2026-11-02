@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { createClient } from '@/utils/supabase/server';
+import { requireAdmin } from '@/utils/supabase/authorization';
 import { ProductFormSchema, type ProductFormInput } from '@/lib/validations/catalog';
 
 export interface ActionResponse<T = any> {
@@ -27,7 +27,7 @@ export async function createProductAction(data: ProductFormInput): Promise<Actio
     }
 
     const { name, slug, category_id, description, is_active, prices, colors } = validated.data;
-    const supabase = await createClient();
+    const { supabase } = await requireAdmin();
 
     // 1. Insert ke tabel products
     const { data: product, error: prodError } = await supabase
@@ -123,7 +123,7 @@ export async function updateProductAction(
     }
 
     const { name, slug, category_id, description, is_active, prices, colors } = validated.data;
-    const supabase = await createClient();
+    const { supabase } = await requireAdmin();
 
     // 1. Update data dasar produk
     const { error: updateError } = await supabase
@@ -199,7 +199,7 @@ export async function deleteProductAction(id: string): Promise<ActionResponse> {
       return { success: false, error: 'ID produk tidak ditemukan.' };
     }
 
-    const supabase = await createClient();
+    const { supabase } = await requireAdmin();
 
     // 1. Ambil data gambar terkait di product_colors sebelum produk dihapus
     const { data: colorRows } = await supabase

@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { gsap } from 'gsap';
 import './admin.css';
 import { logoutAdminAction } from '@/app/actions/auth';
 import { createProductAction, updateProductAction, deleteProductAction } from '@/app/actions/catalog';
@@ -19,6 +20,8 @@ export default function AdminClient({
 
   // Navigation tab: 'products' | 'gallery' | 'media'
   const [activeTab, setActiveTab] = useState('products');
+  const [selectedRowId, setSelectedRowId] = useState(initialProducts[0]?.id || null);
+  const [productPage, setProductPage] = useState(1);
 
   // Data states
   const [products, setProducts] = useState(initialProducts);
@@ -43,6 +46,7 @@ export default function AdminClient({
   // Product filters
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState('all');
 
   // Gallery filters
   const [galleryTypeFilter, setGalleryTypeFilter] = useState('all');
@@ -98,9 +102,42 @@ export default function AdminClient({
         categoryFilter === 'all' ||
         p.category_id === categoryFilter ||
         p.category?.slug === categoryFilter;
-      return matchSearch && matchCategory;
+      const matchStatus = statusFilter === 'all' || (statusFilter === 'active' ? p.is_active : !p.is_active);
+      return matchSearch && matchCategory && matchStatus;
     });
-  }, [products, searchQuery, categoryFilter]);
+  }, [products, searchQuery, categoryFilter, statusFilter]);
+
+  const productPageSize = 6;
+  const productPageCount = Math.max(1, Math.ceil(filteredProducts.length / productPageSize));
+  const paginationStart = Math.max(1, Math.min(productPage - 2, productPageCount - 4));
+  const visibleProductPages = Array.from(
+    { length: Math.min(5, productPageCount) },
+    (_, index) => paginationStart + index,
+  );
+  const paginatedProducts = filteredProducts.slice(
+    (productPage - 1) * productPageSize,
+    productPage * productPageSize,
+  );
+
+  useEffect(() => {
+    setProductPage(1);
+  }, [searchQuery, categoryFilter, statusFilter]);
+
+  useEffect(() => {
+    setProductPage((page) => Math.min(page, productPageCount));
+  }, [productPageCount]);
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    gsap.fromTo('.admin-view', { y: 8, opacity: 0.65 }, { y: 0, opacity: 1, duration: 0.28, ease: 'power2.out' });
+  }, [activeTab]);
+
+  useEffect(() => {
+    const selectedRow = document.querySelector('.admin-table tr.is-selected');
+    if (selectedRow && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      gsap.fromTo(selectedRow, { x: 8, opacity: 0.72 }, { x: 0, opacity: 1, duration: 0.24, ease: 'power2.out' });
+    }
+  }, [selectedRowId]);
 
   // -------------------------------------------------------------
   // FILTERED GALLERY
@@ -488,6 +525,7 @@ export default function AdminClient({
   }
 
   return (
+    <div className="admin-shell">
     <div className="admin-app">
       {/* ============================================================ */}
       {/* SIDEBAR                                                      */}
@@ -509,6 +547,7 @@ export default function AdminClient({
           >
             <span className="admin-nav-icon">
               <span>📦</span>
+              <i className="bi bi-grid-1x2-fill" aria-hidden="true" />
               <span>Katalog Produk</span>
             </span>
             <span className="admin-nav-badge">{products.length}</span>
@@ -521,6 +560,7 @@ export default function AdminClient({
           >
             <span className="admin-nav-icon">
               <span>🖼️</span>
+              <i className="bi bi-images" aria-hidden="true" />
               <span>Galeri Acara</span>
             </span>
             <span className="admin-nav-badge">{gallery.length}</span>
@@ -533,6 +573,7 @@ export default function AdminClient({
           >
             <span className="admin-nav-icon">
               <span>📁</span>
+              <i className="bi bi-cloud-arrow-up" aria-hidden="true" />
               <span>Media Storage</span>
             </span>
             <span className="admin-nav-badge">5 MB</span>
@@ -576,15 +617,16 @@ export default function AdminClient({
         {/* TOPBAR */}
         <header className="admin-topbar">
           <div className="admin-topbar-title">
+            <span className="admin-eyebrow">ARUM TENDA / CMS</span>
             <h1>
-              {activeTab === 'products' && 'Manajemen Katalog Produk'}
-              {activeTab === 'gallery' && 'Dokumentasi Galeri Acara'}
-              {activeTab === 'media' && 'Media Storage Supabase'}
+              {activeTab === 'products' && 'Produk'}
+              {activeTab === 'gallery' && 'Galeri'}
+              {activeTab === 'media' && 'Media'}
             </h1>
             <p>
-              {activeTab === 'products' && 'Kelola daftar produk, spesifikasi harga dealer, dan varian warna.'}
-              {activeTab === 'gallery' && 'Kelola dokumentasi foto inspirasi tenda dan sinkronisasi Instagram.'}
-              {activeTab === 'media' && 'Unggah aset foto beresolusi tinggi ke bucket penyimpanan arum-media.'}
+              {activeTab === 'products' && `${filteredProducts.length} produk ditemukan`}
+              {activeTab === 'gallery' && `${filteredGallery.length} foto ditemukan`}
+              {activeTab === 'media' && 'Kelola file media situs.'}
             </p>
           </div>
 
@@ -607,6 +649,13 @@ export default function AdminClient({
                 <span>＋</span> Tambah Foto Galeri
               </button>
             )}
+            <div className="admin-icon-button" aria-hidden="true">
+              <i className="bi bi-bell" aria-hidden="true" />
+              <span className="admin-notification-dot" />
+            </div>
+            <div className="admin-top-avatar" title={initialUser?.email || 'Admin'}>
+              {initialUser?.email ? initialUser.email.charAt(0).toUpperCase() : 'A'}
+            </div>
             <Link
               href="/katalog"
               target="_blank"
@@ -682,7 +731,13 @@ export default function AdminClient({
           {/* TAB 1: KATALOG PRODUK                                        */}
           {/* ============================================================ */}
           {activeTab === 'products' && (
+            <div className="admin-view">
             <div className="admin-card">
+              <div className="admin-list-tabs" role="tablist" aria-label="Filter status produk">
+                <button type="button" role="tab" aria-selected={statusFilter === 'all'} className={statusFilter === 'all' ? 'active' : ''} onClick={() => setStatusFilter('all')}>Semua produk <span>{products.length}</span></button>
+                <button type="button" role="tab" aria-selected={statusFilter === 'active'} className={statusFilter === 'active' ? 'active' : ''} onClick={() => setStatusFilter('active')}>Aktif <span>{products.filter((product) => product.is_active).length}</span></button>
+                <button type="button" role="tab" aria-selected={statusFilter === 'draft'} className={statusFilter === 'draft' ? 'active' : ''} onClick={() => setStatusFilter('draft')}>Draft <span>{products.filter((product) => !product.is_active).length}</span></button>
+              </div>
               {/* TOOLBAR */}
               <div className="admin-card-header">
                 <div className="admin-toolbar-search">
@@ -720,6 +775,7 @@ export default function AdminClient({
                       <th style={{ width: '60px' }}>Foto</th>
                       <th>Nama &amp; Slug Produk</th>
                       <th>Kategori</th>
+                      <th>Tanggal</th>
                       <th>Daftar Harga Spek</th>
                       <th>Varian Warna</th>
                       <th>Status</th>
@@ -729,12 +785,12 @@ export default function AdminClient({
                   <tbody>
                     {filteredProducts.length === 0 ? (
                       <tr>
-                        <td colSpan={7} style={{ textAlign: 'center', padding: '40px 20px', color: '#64748b' }}>
+                        <td colSpan={8} style={{ textAlign: 'center', padding: '40px 20px', color: '#64748b' }}>
                           Tidak ada produk yang sesuai dengan pencarian atau filter.
                         </td>
                       </tr>
                     ) : (
-                      filteredProducts.map((p) => {
+                      paginatedProducts.map((p) => {
                         const firstImage =
                           p.colors?.[0]?.image_url ||
                           'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=120&q=80';
@@ -744,7 +800,14 @@ export default function AdminClient({
                             : null;
 
                         return (
-                          <tr key={p.id}>
+                          <tr
+                            key={p.id}
+                            data-product-row={p.id}
+                            className={selectedRowId === p.id ? 'is-selected' : ''}
+                            tabIndex={0}
+                            onClick={() => setSelectedRowId(p.id)}
+                            onKeyDown={(event) => { if (event.key === 'Enter') setSelectedRowId(p.id); }}
+                          >
                             <td>
                               <img src={firstImage} alt={p.name} className="admin-product-thumb" />
                             </td>
@@ -766,6 +829,7 @@ export default function AdminClient({
                                 {p.category?.name || 'Umum'}
                               </span>
                             </td>
+                            <td>{p.created_at ? new Intl.DateTimeFormat('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(p.created_at)) : '-'}</td>
                             <td>
                               {lowestPrice ? (
                                 <div>
@@ -830,6 +894,17 @@ export default function AdminClient({
                   </tbody>
                 </table>
               </div>
+              <div className="admin-table-footer">
+                <span>Menampilkan {filteredProducts.length ? (productPage - 1) * productPageSize + 1 : 0}–{Math.min(productPage * productPageSize, filteredProducts.length)} dari {filteredProducts.length} produk</span>
+                <div className="admin-pagination" aria-label="Halaman produk">
+                  <button type="button" onClick={() => setProductPage((page) => Math.max(1, page - 1))} disabled={productPage === 1} aria-label="Halaman sebelumnya"><i className="bi bi-chevron-left" aria-hidden="true" /></button>
+                  {visibleProductPages.map((page) => (
+                    <button key={page} type="button" className={productPage === page ? 'active' : ''} onClick={() => setProductPage(page)}>{page}</button>
+                  ))}
+                  <button type="button" onClick={() => setProductPage((page) => Math.min(productPageCount, page + 1))} disabled={productPage >= productPageCount} aria-label="Halaman berikutnya"><i className="bi bi-chevron-right" aria-hidden="true" /></button>
+                </div>
+              </div>
+            </div>
             </div>
           )}
 
@@ -837,6 +912,7 @@ export default function AdminClient({
           {/* TAB 2: DOKUMENTASI GALERI                                    */}
           {/* ============================================================ */}
           {activeTab === 'gallery' && (
+            <div className="admin-view">
             <div className="admin-card">
               <div className="admin-card-header">
                 <div className="admin-toolbar-filter">
@@ -876,7 +952,7 @@ export default function AdminClient({
                       </tr>
                     ) : (
                       filteredGallery.map((g) => (
-                        <tr key={g.id}>
+                        <tr key={g.id} className={selectedRowId === g.id ? 'is-selected' : ''} onClick={() => setSelectedRowId(g.id)}>
                           <td>
                             <img
                               src={g.image_url}
@@ -930,13 +1006,14 @@ export default function AdminClient({
                 </table>
               </div>
             </div>
+            </div>
           )}
 
           {/* ============================================================ */}
           {/* TAB 3: MEDIA STORAGE                                         */}
           {/* ============================================================ */}
           {activeTab === 'media' && (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+            <div className="admin-view admin-media-grid">
               {/* UPLOAD BOX */}
               <div className="admin-card" style={{ padding: '24px' }}>
                 <h3 style={{ fontSize: '16px', fontWeight: 700, margin: '0 0 8px', fontFamily: 'var(--serif)' }}>
@@ -1476,6 +1553,7 @@ export default function AdminClient({
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 }

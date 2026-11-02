@@ -1,6 +1,6 @@
 'use server';
 
-import { createClient } from '@/utils/supabase/server';
+import { requireAdmin } from '@/utils/supabase/authorization';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
@@ -33,17 +33,7 @@ export async function uploadProductImage(formData: FormData): Promise<UploadResu
       };
     }
 
-    const supabase = await createClient();
-
-    // Pastikan user terautentikasi sesuai aturan RLS Storage bucket
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
-
-    if (authError || !user) {
-      return { success: false, error: 'Akses ditolak: Anda harus login sebagai admin.' };
-    }
+    const { supabase } = await requireAdmin();
 
     // Tentukan ekstensi
     const extension = file.type === 'image/webp' ? 'webp' : file.type === 'image/png' ? 'png' : 'jpg';

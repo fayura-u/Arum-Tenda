@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { createClient } from '@/utils/supabase/server';
+import { requireAdmin } from '@/utils/supabase/authorization';
 import { GalleryFormSchema, type GalleryFormInput } from '@/lib/validations/catalog';
 import type { ActionResponse } from './catalog';
 
@@ -21,7 +21,7 @@ export async function createGalleryItemAction(data: GalleryFormInput): Promise<A
     }
 
     const { title, tent_type, image_url, instagram_url, is_featured } = validated.data;
-    const supabase = await createClient();
+    const { supabase } = await requireAdmin();
 
     const { data: item, error: insertError } = await supabase
       .from('gallery_items')
@@ -58,7 +58,7 @@ export async function deleteGalleryItemAction(id: string): Promise<ActionRespons
       return { success: false, error: 'ID item galeri tidak ditemukan.' };
     }
 
-    const supabase = await createClient();
+    const { supabase } = await requireAdmin();
 
     // 1. Ambil info gambar
     const { data: item } = await supabase

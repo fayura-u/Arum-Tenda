@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
+import { isAdminUser } from '@/utils/supabase/authorization';
 import { getAdminProducts, getAdminGallery, getCategories } from '@/lib/queries/catalog';
 import AdminClient from './admin-client';
 
@@ -23,6 +24,10 @@ export default async function AdminPage() {
   // Double-check auth di level server component
   if (!user) {
     redirect('/login?redirectTo=/admin');
+  }
+
+  if (!isAdminUser(user)) {
+    redirect('/');
   }
 
   const [products, gallery, categories] = await Promise.all([

@@ -45,11 +45,20 @@ export async function updateSession(request: NextRequest) {
   // Proteksi rute /admin/* (Fase 6)
   // Kecualikan permintaan Server Action (next-action) agar tidak merusak siklus response payload action
   const isServerAction = request.headers.has('next-action');
-  if (pathname.startsWith('/admin') && !user && !isServerAction) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/login';
-    url.searchParams.set('redirectTo', pathname);
-    return NextResponse.redirect(url, { status: 307 });
+  if (pathname.startsWith('/admin') && !isServerAction) {
+    if (!user) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/login';
+      url.searchParams.set('redirectTo', pathname);
+      return NextResponse.redirect(url, { status: 307 });
+    }
+
+    if (user.app_metadata?.role !== 'admin') {
+      const url = request.nextUrl.clone();
+      url.pathname = '/';
+      url.search = '';
+      return NextResponse.redirect(url, { status: 307 });
+    }
   }
 
   // Jika user sudah login dan mengakses /login, arahkan langsung ke /admin
