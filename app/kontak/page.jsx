@@ -1,18 +1,29 @@
 import Link from 'next/link';
 import SubpageHeader from '../components/subpage-header';
 import SubpageFooter from '../components/subpage-footer';
+import { BreadcrumbJsonLd } from '@/app/components/json-ld';
 
 export const metadata = {
-  title: 'Kontak & Reservasi — Arum Tenda',
-  description: 'Hubungi Arum Tenda untuk konsultasi kebutuhan sewa tenda, dekorasi, dan perlengkapan acara.',
+  title: 'Kontak & Reservasi Sewa Tenda Purbalingga',
+  description:
+    'Hubungi konsultan Arum Tenda untuk konsultasi gratis, jadwal survei lokasi, dan reservasi paket tenda pernikahan di Purbalingga, Purwokerto, dan Banyumas Raya.',
+  alternates: {
+    canonical: '/kontak',
+  },
 };
 
 const whatsappNumber = '6281234567890';
 const whatsappHref = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Halo Arum Tenda, saya ingin konsultasi mengenai kebutuhan sewa tenda untuk acara.')}`;
 
 export default function KontakPage() {
+  const breadcrumbs = [
+    { name: 'Beranda', path: '/' },
+    { name: 'Kontak & Reservasi', path: '/kontak' },
+  ];
+
   return (
     <div className="subpage contact-page">
+      <BreadcrumbJsonLd items={breadcrumbs} />
       <SubpageHeader activePage="/kontak" />
       <main className="subpage-main">
         <p className="eyebrow">ARUM TENDA · KONTAK &amp; KONSULTASI</p>

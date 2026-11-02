@@ -1,14 +1,29 @@
 import { getGalleryItems } from '@/lib/queries/catalog';
 import GalleryClient from './gallery-client';
+import { BreadcrumbJsonLd } from '@/app/components/json-ld';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata = {
-  title: 'Galeri Dekorasi — Arum Tenda',
-  description: 'Dokumentasi dan inspirasi dekorasi tenda pesta pernikahan, khitan, dan acara keluarga dari Arum Tenda.',
+  title: 'Galeri Dekorasi Pernikahan & Pesta',
+  description:
+    'Dokumentasi portofolio instalasi tenda pernikahan, tenda serut VIP, dan tata dekorasi pesta asli Arum Tenda di Purbalingga, Purwokerto, Banyumas, dan sekitarnya.',
+  alternates: {
+    canonical: '/galeri',
+  },
 };
 
 export default async function GaleriPage() {
   const items = await getGalleryItems();
-  return <GalleryClient initialItems={items} />;
+  const breadcrumbs = [
+    { name: 'Beranda', path: '/' },
+    { name: 'Galeri Dokumentasi', path: '/galeri' },
+  ];
+
+  return (
+    <>
+      <BreadcrumbJsonLd items={breadcrumbs} />
+      <GalleryClient initialItems={items} />
+    </>
+  );
 }
