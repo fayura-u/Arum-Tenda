@@ -4,6 +4,7 @@ import { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import SubpageHeader from '../components/subpage-header';
 import SubpageFooter from '../components/subpage-footer';
+import inventoryItems from '@/data/inventory-items.json';
 
 const whatsappNumber = '6281234567890';
 const storageKey = 'arum-tenda-catalog-v1';
@@ -17,19 +18,6 @@ const defaultProducts = [
   { id: 'glassware', name: 'Gelas & Glassware', price: 7000, unit: 'pcs', type: 'equipment', description: 'Pilihan gelas untuk melengkapi meja tamu dan meja jamuan.', image: 'https://images.unsplash.com/photo-1513558161293-cdaf765edfd7?auto=format&fit=crop&w=1100&q=82' },
   { id: 'table-chair', name: 'Meja & Kursi', price: 45000, unit: 'set', type: 'equipment', description: 'Perlengkapan meja dan kursi untuk area makan atau penerima tamu.', image: 'https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=1100&q=82' },
 ];
-
-const galleryProducts = [
-  ['Tenda Roder', 'photo-1519167758481-83f550bb49b3'],
-  ['Tenda Dekorasi', 'photo-1464366400600-7168b8af9bc3'],
-  ['Tenda Sarnafil', 'photo-1511795409834-ef04bbd61622'],
-  ['Kursi Tiffany', 'photo-1507504031003-b417219a0fde'],
-  ['Meja Jamuan', 'photo-1493857671505-72967e2e2760'],
-  ['Peralatan Makan', 'photo-1513558161293-cdaf765edfd7'],
-  ['Dekorasi Meja', 'photo-1492684223066-81342ee5ff30'],
-  ['Kursi Futura', 'photo-1519225421980-715cb0215aed'],
-  ['Lampu Dekorasi', 'photo-1507504031003-b417219a0fde'],
-  ['Perlengkapan Pesta', 'photo-1519167758481-83f550bb49b3'],
-].map(([name, photo]) => ({ name, image: `https://images.unsplash.com/${photo}?auto=format&fit=crop&w=900&q=82` }));
 
 const defaultPlaceholderPrices = [
   [['Tenda Roder', 'Rp xx.xxx,- / m²'], ['Tenda Dekorasi', 'Rp xx.xxx,-'], ['Tenda Sarnafil', 'Rp xx.xxx,-'], ['Tenda Plafon', 'Rp xx.xxx,-'], ['Meja Prasmanan', 'Rp xx.xxx,-'], ['Kursi Futura', 'Rp xx.xxx,-'], ['Kursi Tiffany', 'Rp xx.xxx,-'], ['Piring & Sendok', 'Rp xx.xxx,- / set'], ['Gelas', 'Rp xx.xxx,- / pcs'], ['Lampu Dekorasi', 'Rp xx.xxx,-']],
@@ -72,6 +60,19 @@ export default function CatalogClient({ initialProducts }) {
   const [editingProduct, setEditingProduct] = useState(null);
   const [formOpen, setFormOpen] = useState(false);
   const [adminOpen, setAdminOpen] = useState(false);
+
+  // State untuk seksi Galeri Barang (Inventaris Asli)
+  const [inventoryFilter, setInventoryFilter] = useState('all');
+  const [inventoryLimit, setInventoryLimit] = useState(15);
+
+  const filteredInventory = useMemo(() => {
+    if (inventoryFilter === 'all') return inventoryItems;
+    return inventoryItems.filter((item) => item.category === inventoryFilter);
+  }, [inventoryFilter]);
+
+  const visibleInventory = useMemo(() => {
+    return filteredInventory.slice(0, inventoryLimit);
+  }, [filteredInventory, inventoryLimit]);
 
   const dynamicPriceRows = useMemo(() => {
     const list = [];
@@ -188,9 +189,68 @@ export default function CatalogClient({ initialProducts }) {
         <p className="price-footnote">* Estimasi harga dasar sewa harian. Tersedia paket hemat untuk durasi sewa lebih dari 2 hari.</p>
       </section>
 
+      {/* SEKSI GALERI BARANG (INVENTARIS ASLI DARI GOOGLE DRIVE) */}
       <section className="catalog-gallery-section">
-        <div className="gallery-title-row"><div><p className="eyebrow">PILIHAN PERLENGKAPAN</p><h2>Galeri Barang</h2></div><p>Klik gambar untuk melihat detail barang.</p></div>
-        <div className="catalog-product-grid boxes-container">{galleryProducts.map((product) => <div className="box" key={product.name}><button className="catalog-product-card box-content" type="button" onClick={() => setActivePhoto(product)} aria-label={`Lihat ${product.name}`}><img src={product.image} alt={product.name} loading="lazy" /><span>{product.name}</span></button></div>)}</div>
+        <div className="gallery-title-row">
+          <div>
+            <p className="eyebrow">PILIHAN PERLENGKAPAN</p>
+            <h2>Galeri Barang</h2>
+          </div>
+          <p>Koleksi dokumentasi asli perlengkapan pesta, prasmanan, dan jamuan dari Arum Tenda.</p>
+        </div>
+
+        <div className="catalog-toolbar" style={{ marginTop: '0', marginBottom: '20px' }}>
+          <div className="catalog-tabs" role="group" aria-label="Filter galeri barang">
+            {[
+              ['all', `Semua (${inventoryItems.length})`],
+              ['alat-makan', 'Alat Makan'],
+              ['prasmanan', 'Prasmanan & Masak'],
+              ['kursi-meja', 'Kursi & Meja'],
+              ['gelas', 'Gelas & Minuman'],
+            ].map(([key, label]) => (
+              <button
+                type="button"
+                data-filter={key}
+                className={`catalog-filter${inventoryFilter === key ? ' active' : ''}`}
+                key={key}
+                onClick={() => {
+                  setInventoryFilter(key);
+                  setInventoryLimit(15);
+                }}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="catalog-product-grid boxes-container">
+          {visibleInventory.map((item) => (
+            <div className="box" key={item.id}>
+              <button
+                className="catalog-product-card box-content"
+                type="button"
+                onClick={() => setActivePhoto(item)}
+                aria-label={`Lihat ${item.name}`}
+              >
+                <img src={item.image} alt={item.name} loading="lazy" />
+                <span>{item.name}</span>
+              </button>
+            </div>
+          ))}
+        </div>
+
+        {inventoryLimit < filteredInventory.length && (
+          <div className="gallery-load-more-container" style={{ marginTop: '28px', marginBottom: '16px' }}>
+            <button
+              type="button"
+              className="button button-dark gallery-load-more-button"
+              onClick={() => setInventoryLimit((prev) => prev + 15)}
+            >
+              Muat Lebih Banyak Barang ({filteredInventory.length - visibleInventory.length} lagi) <span>↓</span>
+            </button>
+          </div>
+        )}
       </section>
 
       <section className="managed-catalog">
@@ -213,7 +273,8 @@ export default function CatalogClient({ initialProducts }) {
 
     <SubpageFooter activePage="/katalog" />
 
-    {activePhoto && <div className="simple-modal-backdrop" role="presentation" onClick={() => setActivePhoto(null)}><section className="catalog-lightbox" role="dialog" aria-modal="true" aria-label={`Pratinjau ${activePhoto.name}`} onClick={(event) => event.stopPropagation()}><button className="catalog-dialog-close" type="button" aria-label="Tutup pratinjau" onClick={() => setActivePhoto(null)}>×</button><img src={activePhoto.image} alt={activePhoto.name} /><div className="catalog-dialog-copy"><p className="eyebrow">PILIHAN PERLENGKAPAN</p><h2>{activePhoto.name}</h2><p>Contoh foto barang. Hubungi tim kami untuk mengetahui detail dan ketersediaannya.</p></div></section></div>}
+    {/* MODAL LIGHTBOX FOTO BARANG INVENTARIS */}
+    {activePhoto && <div className="simple-modal-backdrop" role="presentation" onClick={() => setActivePhoto(null)}><section className="catalog-lightbox" role="dialog" aria-modal="true" aria-label={`Pratinjau ${activePhoto.name}`} onClick={(event) => event.stopPropagation()}><button className="catalog-dialog-close" type="button" aria-label="Tutup pratinjau" onClick={() => setActivePhoto(null)}>×</button><img src={activePhoto.image} alt={activePhoto.name} /><div className="catalog-dialog-copy"><p className="eyebrow">DOKUMENTASI BARANG ASLI · ARUM TENDA</p><h2>{activePhoto.name}</h2><p>Foto dokumentasi asli inventaris perlengkapan pesta dan katering Arum Tenda. Hubungi tim kami untuk menanyakan stok dan ketersediaan jadwal acara Anda.</p><WhatsAppLink message={`Halo Arum Tenda, saya tertarik dan ingin menanyakan ketersediaan sewa untuk barang: ${activePhoto.name}. Mohon info harga dan persyaratannya.`}><span className="button button-dark" style={{ width: '100%', justifyContent: 'center', marginTop: '16px' }}>Tanya Sewa via WhatsApp ↗</span></WhatsAppLink></div></section></div>}
 
     {activeProduct && <div className="simple-modal-backdrop" role="presentation" onClick={() => setActiveProduct(null)}><section className="catalog-lightbox" role="dialog" aria-modal="true" aria-label={`Detail ${activeProduct.name}`} onClick={(event) => event.stopPropagation()}><button className="catalog-dialog-close" type="button" aria-label="Tutup detail" onClick={() => setActiveProduct(null)}>×</button><img src={activeProduct.image} alt={activeProduct.name} /><div className="catalog-dialog-copy"><p className="eyebrow">{activeProduct.type === 'tent' ? 'KATALOG TENDA · SIMULASI WARNA' : 'KATALOG PERLENGKAPAN ACARA'}</p><h2>{activeProduct.name}</h2><p>Mulai Rp {new Intl.NumberFormat('id-ID').format(activeProduct.price)} / {activeProduct.unit}</p><p>{activeProduct.description}</p><details className="product-accordion"><summary>Spesifikasi Produk <span aria-hidden="true">＋</span></summary><div className="accordion-content">{activeProduct.specifications || `Kategori: ${activeProduct.type === 'tent' ? 'Tenda acara' : 'Perlengkapan acara'}\nSatuan harga: ${activeProduct.unit}\nKetersediaan: Konfirmasi melalui WhatsApp`}</div></details>
       {activeProduct.type === 'tent' && <div className="detail-color-picker"><p className="detail-label">PILIH WARNA KANOPI <span>{detailColor.name}</span></p><div className="detail-swatches" role="group" aria-label="Pilih warna kanopi">{[['#f0ece0', 'Ivory'], ['#9e2629', 'Marun'], ['#253c35', 'Hijau botol'], ['#d3a940', 'Kuning'], ['#536b88', 'Biru'], ['#b98b72', 'Terracotta']].map(([hex, name]) => <button className={`detail-swatch${detailColor.name === name ? ' active' : ''}`} type="button" key={name} data-color={hex} data-label={name} aria-label={name} aria-pressed={detailColor.name === name} style={{ '--swatch': hex }} onClick={() => setDetailColor({ hex, name })} />)}</div>

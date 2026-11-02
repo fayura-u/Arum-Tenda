@@ -1,0 +1,352 @@
+[
+  {
+    "id": "inv-1",
+    "name": "Baskom Stainless Steel 1",
+    "category": "prasmanan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/baskom-stainless-steel-1.jpg",
+    "originalFileId": "19CSiMk5dxrgjtbVDV8jtxRBi0wyyaLRK-0"
+  },
+  {
+    "id": "inv-2",
+    "name": "Baskom Stainless Steel 2",
+    "category": "prasmanan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/baskom-stainless-steel-2.jpg",
+    "originalFileId": "1HjF2-IM9pR4jF1xDaNhcNTXORnQ5BmKb-0"
+  },
+  {
+    "id": "inv-3",
+    "name": "Cangkir Kaca Bening",
+    "category": "gelas",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/cangkir-kaca-bening.jpg",
+    "originalFileId": "1pg4jAKA6ZqzqZT9ZaLcPpBXRKwjqN6Bb-0"
+  },
+  {
+    "id": "inv-4",
+    "name": "Cangkir Tatakan Keramik",
+    "category": "gelas",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/cangkir-tatakan-keramik.jpg",
+    "originalFileId": "1AiQCWxPmGHfKo0HHt421MkFWMXhSqKF7-0"
+  },
+  {
+    "id": "inv-5",
+    "name": "Dispenser Air Stainless",
+    "category": "prasmanan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/dispenser-air-stainless.png",
+    "originalFileId": "1JZxlCZkowfzAZ77lDBy_CicHHQ8B_RL4-0"
+  },
+  {
+    "id": "inv-6",
+    "name": "Gelas Es Krim Kaca",
+    "category": "gelas",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/gelas-es-krim-kaca.jpg",
+    "originalFileId": "1MAqFsEmtnXtRqU2zeWg0DNPdIyToAr6X-0"
+  },
+  {
+    "id": "inv-7",
+    "name": "Gelas Kaca Bening",
+    "category": "gelas",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/gelas-kaca-bening.jpg",
+    "originalFileId": "1hSxuJ8bL_m9Z8sz73aR0j2iR6ZR9Non0-0"
+  },
+  {
+    "id": "inv-8",
+    "name": "Gelas Kaca Pendek",
+    "category": "gelas",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/gelas-kaca-pendek.jpg",
+    "originalFileId": "10Q5UKMbn06eTMZ8AHz-q-NQTUW36vtdW-0"
+  },
+  {
+    "id": "inv-9",
+    "name": "Kompor Gas Dua Tungku",
+    "category": "prasmanan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/kompor-gas-dua-tungku.jpg",
+    "originalFileId": "14AbSJi7MAfrQHRc6qt5qfwtsb3gFp7FG-0"
+  },
+  {
+    "id": "inv-10",
+    "name": "Kursi Futura Merah",
+    "category": "kursi-meja",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/kursi-futura-merah.jpg",
+    "originalFileId": "1J8fkn9mG2uXyZy8-GsJBxx-Amt0l1FIu-0"
+  },
+  {
+    "id": "inv-11",
+    "name": "Kursi Lipat Hitam",
+    "category": "kursi-meja",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/kursi-lipat-hitam.jpg",
+    "originalFileId": "1WNsjp_azuVcc9Tn6oAPUXSGnGKiTVIRz-0"
+  },
+  {
+    "id": "inv-12",
+    "name": "Kursi Plastik Hijau",
+    "category": "kursi-meja",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/kursi-plastik-hijau.jpg",
+    "originalFileId": "1oPhqVLWvWezDEj47qeOT-TJkBEsZ01hU-0"
+  },
+  {
+    "id": "inv-13",
+    "name": "Mangkok Es Krim Kaca",
+    "category": "alat-makan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/mangkok-es-krim-kaca.jpg",
+    "originalFileId": "1ST_1mqPOG0EEDhHYffKbV7mxY3uYwg3m-0"
+  },
+  {
+    "id": "inv-14",
+    "name": "Mangkok Keramik Ayam Jago",
+    "category": "alat-makan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/mangkok-keramik-ayam-jago.jpg",
+    "originalFileId": "1TGSaABcmIxIV-KP2FphBIj2diJ5A69vN-0"
+  },
+  {
+    "id": "inv-15",
+    "name": "Mangkuk Kaca Kecil",
+    "category": "alat-makan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/mangkuk-kaca-kecil.jpg",
+    "originalFileId": "1Q59e8oj-wRxsj2LzKNwQHrFfIbnceIeo-0"
+  },
+  {
+    "id": "inv-16",
+    "name": "Mangkuk Keramik Motif Bunga",
+    "category": "alat-makan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/mangkuk-keramik-motif-bunga.jpg",
+    "originalFileId": "1eZqJK3vkD3sQ0Lw1dLcXWdZWRBYXBNR3-0"
+  },
+  {
+    "id": "inv-17",
+    "name": "Mangkuk Keramik Putih 1",
+    "category": "alat-makan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/mangkuk-keramik-putih-1.jpg",
+    "originalFileId": "1EiZTpgUozfo9jpFTe76YZv3BPmX54hSj-0"
+  },
+  {
+    "id": "inv-18",
+    "name": "Mangkuk Keramik Putih 2",
+    "category": "alat-makan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/mangkuk-keramik-putih-2.png",
+    "originalFileId": "1ejabDBF97XYpB4-WSUXE1ik555sQZ4a5-0"
+  },
+  {
+    "id": "inv-19",
+    "name": "Mangkuk Saji Keramik",
+    "category": "alat-makan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/mangkuk-saji-keramik.jpg",
+    "originalFileId": "1N8BLjFg_qMRohQ7WLKmhudm4rEL2x7Hv-0"
+  },
+  {
+    "id": "inv-20",
+    "name": "Nampan Saji Kayu",
+    "category": "alat-makan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/nampan-saji-kayu.jpg",
+    "originalFileId": "1cEdJDVbeKjXuI3_cLG9J-pW_5jEoXagy-0"
+  },
+  {
+    "id": "inv-21",
+    "name": "Panci Aluminium Besar 1",
+    "category": "prasmanan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/panci-aluminium-besar-1.jpg",
+    "originalFileId": "1CLEpgF-am-lOJzulM9DQ7u6tjlkqi3nI-0"
+  },
+  {
+    "id": "inv-22",
+    "name": "Panci Aluminium Besar 2",
+    "category": "prasmanan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/panci-aluminium-besar-2.jpg",
+    "originalFileId": "16hevq5nejn6m681TymPpFIBZbeQTBmtz-0"
+  },
+  {
+    "id": "inv-23",
+    "name": "Panci Kukus Aluminium 1",
+    "category": "prasmanan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/panci-kukus-aluminium-1.jpg",
+    "originalFileId": "1jKVc07R_PLZhI9mMrZ4O4pc4n3ETjQSV-0"
+  },
+  {
+    "id": "inv-24",
+    "name": "Panci Kukus Aluminium 2",
+    "category": "prasmanan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/panci-kukus-aluminium-2.jpg",
+    "originalFileId": "1dqCFU8vUV_k5_YycJFj5OjlQ729VLSI9-0"
+  },
+  {
+    "id": "inv-25",
+    "name": "Pemanas Makanan Bulat 1",
+    "category": "prasmanan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/pemanas-makanan-bulat-1.jpg",
+    "originalFileId": "1Grh5PtqsCPfReK3tVlj63wOSa-_ZvJjA-0"
+  },
+  {
+    "id": "inv-26",
+    "name": "Pemanas Makanan Bulat 2",
+    "category": "prasmanan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/pemanas-makanan-bulat-2.jpg",
+    "originalFileId": "1ObabktUebB9gxx6APDj3gWAGhTEJjtZ--0"
+  },
+  {
+    "id": "inv-27",
+    "name": "Pemanas Makanan Bulat Handle Gold",
+    "category": "prasmanan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/pemanas-makanan-bulat-handle-gold.png",
+    "originalFileId": "1zV1UK41QsPSCT3K_lwlzKu0TeGVRpbN5-0"
+  },
+  {
+    "id": "inv-28",
+    "name": "Pemanas Makanan Bulat Kaki Lengkung",
+    "category": "prasmanan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/pemanas-makanan-bulat-kaki-lengkung.png",
+    "originalFileId": "1h3En8P3KJTLmgLmiB7-jXtflrZ3gxFI8-0"
+  },
+  {
+    "id": "inv-29",
+    "name": "Pemanas Makanan Prasmanan 1",
+    "category": "prasmanan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/pemanas-makanan-prasmanan-1.jpg",
+    "originalFileId": "1GgIlqk-mBuJdSgEkQZHAO0v_11XqwIdK-0"
+  },
+  {
+    "id": "inv-30",
+    "name": "Pemanas Makanan Prasmanan 2",
+    "category": "prasmanan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/pemanas-makanan-prasmanan-2.jpg",
+    "originalFileId": "14eAxq5RTVuV5AWaZ-EP7pdbipLTjQQhe-0"
+  },
+  {
+    "id": "inv-31",
+    "name": "Pemanas Makanan Prasmanan 3",
+    "category": "prasmanan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/pemanas-makanan-prasmanan-3.jpg",
+    "originalFileId": "1h6RbPK8hMW9ptYEGso1mqyrIJtVqhEiA-0"
+  },
+  {
+    "id": "inv-32",
+    "name": "Pemanas Makanan Prasmanan 4",
+    "category": "prasmanan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/pemanas-makanan-prasmanan-4.jpg",
+    "originalFileId": "1704cZfa8Dhth_UQ9cd6SlnXtZisJSoLG-0"
+  },
+  {
+    "id": "inv-33",
+    "name": "Pemanas Makanan Roll Top",
+    "category": "prasmanan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/pemanas-makanan-roll-top.jpg",
+    "originalFileId": "12ldeW-4pE6ZrjknAMBo316HmLxk42bjm-0"
+  },
+  {
+    "id": "inv-34",
+    "name": "Pemanas Prasmanan Bulat",
+    "category": "prasmanan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/pemanas-prasmanan-bulat.jpg",
+    "originalFileId": "1eAj2qDjitsUE1B8BBet1XQJsRIrB_VrJ-0"
+  },
+  {
+    "id": "inv-35",
+    "name": "Piring Anyaman Rotan",
+    "category": "alat-makan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/piring-anyaman-rotan.jpg",
+    "originalFileId": "1eV6qisDD7PDec94lybY6eIessGd37YeM-0"
+  },
+  {
+    "id": "inv-36",
+    "name": "Piring Kaca Bening",
+    "category": "alat-makan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/piring-kaca-bening.jpg",
+    "originalFileId": "1do2VFgni_T0pQnm7Yi7TITmmrbzcF4Uh-0"
+  },
+  {
+    "id": "inv-37",
+    "name": "Piring Kaca Motif Apel",
+    "category": "alat-makan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/piring-kaca-motif-apel.jpg",
+    "originalFileId": "1PPIRftl-3MRxjQvPff2Gyl8A1LKCJFMO-0"
+  },
+  {
+    "id": "inv-38",
+    "name": "Piring Keramik Motif Bunga",
+    "category": "alat-makan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/piring-keramik-motif-bunga.jpg",
+    "originalFileId": "1x2ADUDL1PRTeGcpEFOxMcVEIsQwQ0djR-0"
+  },
+  {
+    "id": "inv-39",
+    "name": "Piring Makan Keramik Putih",
+    "category": "alat-makan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/piring-makan-keramik-putih.jpg",
+    "originalFileId": "1tDgcIDyEnCY0G-vtQJ9GreUwj3RtG4dw-0"
+  },
+  {
+    "id": "inv-40",
+    "name": "Piring Makan Kotak Putih",
+    "category": "alat-makan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/piring-makan-kotak-putih.jpg",
+    "originalFileId": "1rD4hegYiI-r0dprW9sHfhx7g5AfIS0XH-0"
+  },
+  {
+    "id": "inv-41",
+    "name": "Piring Makan Lis Emas",
+    "category": "alat-makan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/piring-makan-lis-emas.jpg",
+    "originalFileId": "13b_sYzfp-NDGeuzh5pUYN54ntN16fdvq-0"
+  },
+  {
+    "id": "inv-42",
+    "name": "Piring Makan Motif Bunga",
+    "category": "alat-makan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/piring-makan-motif-bunga.jpg",
+    "originalFileId": "1Ga2dMXQsVmBpUdZm3CE8rRNAkYPnutpe-0"
+  },
+  {
+    "id": "inv-43",
+    "name": "Sendok Bebek Stainless",
+    "category": "alat-makan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/sendok-bebek-stainless.png",
+    "originalFileId": "1YQmZn8EZYF267N6UcKaxBa379k8pd3jI-0"
+  },
+  {
+    "id": "inv-44",
+    "name": "Sendok Garpu Stainless",
+    "category": "alat-makan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/sendok-garpu-stainless.jpg",
+    "originalFileId": "1Bctrdp_0tuOUP-xNzV0eibbk78zq-9f_-0"
+  },
+  {
+    "id": "inv-45",
+    "name": "Sendok Makan Stainless",
+    "category": "alat-makan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/sendok-makan-stainless.png",
+    "originalFileId": "1cQkCMgSM0g2SNljmgXYTJioepA7tHe_p-0"
+  },
+  {
+    "id": "inv-46",
+    "name": "Sendok Saji Motif Kerang",
+    "category": "alat-makan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/sendok-saji-motif-kerang.jpg",
+    "originalFileId": "1sXpvnac5eRYU3UERgjY23lz4-LL3p57D-0"
+  },
+  {
+    "id": "inv-47",
+    "name": "Termos Nasi Plastik",
+    "category": "prasmanan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/termos-nasi-plastik.jpg",
+    "originalFileId": "1tzYmyLXacfd4dCAgDReFLhSDMhcGynnt-0"
+  },
+  {
+    "id": "inv-48",
+    "name": "Tong Nasi Aluminium",
+    "category": "prasmanan",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/tong-nasi-aluminium.jpg",
+    "originalFileId": "1eKAifrStY38EoTgyESitAoZ_4I7SeU1E-0"
+  },
+  {
+    "id": "inv-49",
+    "name": "Toples Es Buah",
+    "category": "gelas",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/toples-es-buah.jpg",
+    "originalFileId": "1taSB48OWWg6x4MSnls2YdWRTbbzs70Gc-0"
+  },
+  {
+    "id": "inv-50",
+    "name": "Toples Kaca Motif Bunga",
+    "category": "gelas",
+    "image": "https://rcsxplbmgcjbkwrwwwsi.supabase.co/storage/v1/object/public/arum-media/inventory/toples-kaca-motif-bunga.jpg",
+    "originalFileId": "18klyWviTMXRFKdEVr8eyL6bE-XpfAeHu-0"
+  }
+]

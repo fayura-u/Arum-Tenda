@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useEffect, useRef } from 'react';
+import { memo, useEffect, useRef, useState, useMemo } from 'react';
 import { gsap } from 'gsap';
 import { Flip } from 'gsap/Flip';
 import SubpageHeader from '../components/subpage-header';
@@ -9,6 +9,33 @@ import SubpageFooter from '../components/subpage-footer';
 gsap.registerPlugin(Flip);
 
 const instagramUrl = 'https://www.instagram.com/arumtendapbg/';
+
+function formatIndonesianDate(dateStr) {
+  if (!dateStr) return '';
+  try {
+    return new Date(dateStr).toLocaleDateString('id-ID', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  } catch {
+    return '';
+  }
+}
+
+function getGalleryDescription(item) {
+  if (!item) return '';
+  const dateStr = formatIndonesianDate(item.createdAt);
+  const title = (item.title || '').trim();
+  const lowerTitle = title.toLowerCase();
+
+  const isLocation = title && !lowerTitle.includes('berminat') && !lowerTitle.includes('hubungi');
+  const baseText = isLocation
+    ? `Dokumentasi portofolio acara di ${title}`
+    : `Dokumentasi portofolio pemasangan tenda Arum Tenda`;
+
+  return dateStr ? `${baseText} — ${dateStr}` : baseText;
+}
 const defaultGalleryItems = [
   ['Pesta di ruang yang hangat', 'Transparan', 'photo-1519167758481-83f550bb49b3'],
   ['Detail dekorasi untuk jamuan', 'Kerut', 'photo-1464366400600-7168b8af9bc3'],
@@ -26,9 +53,10 @@ const defaultGalleryItems = [
   image: `https://images.unsplash.com/${photo}?auto=format&fit=crop&w=1100&q=84`,
   postUrl: instagramUrl,
   index,
+  id: `fallback-${index}`,
 }));
 
-const InteractiveGallery = memo(function InteractiveGallery({ filterRef, galleryItems }) {
+const InteractiveGallery = memo(function InteractiveGallery({ galleryItems }) {
   const gridRef = useRef(null);
   const modalRef = useRef(null);
   const modalMediaRef = useRef(null);
@@ -39,7 +67,6 @@ const InteractiveGallery = memo(function InteractiveGallery({ filterRef, gallery
 
   useEffect(() => {
     const grid = gridRef.current;
-    const filter = filterRef.current;
     const modal = modalRef.current;
     const modalMedia = modalMediaRef.current;
     const overlay = overlayRef.current;
@@ -59,7 +86,7 @@ const InteractiveGallery = memo(function InteractiveGallery({ filterRef, gallery
       const index = activeIndex;
       const image = activeImage;
       const state = Flip.getState(image);
-      boxes[index].appendChild(image);
+      boxes[index]?.appendChild(image);
       activeIndex = undefined;
       activeImage = undefined;
       modal.setAttribute('aria-hidden', 'true');
@@ -89,11 +116,13 @@ const InteractiveGallery = memo(function InteractiveGallery({ filterRef, gallery
       activeIndex = index;
       activeImage = image;
       const item = galleryItems[index];
-      title.textContent = item.title;
-      description.textContent = `${item.type} · Inspirasi penataan tenda dan perlengkapan untuk acara Anda.`;
-      instagramLink.href = item.postUrl;
+      if (item) {
+        title.textContent = item.title;
+        description.textContent = getGalleryDescription(item);
+        instagramLink.href = item.postUrl || instagramUrl;
+        modal.setAttribute('aria-label', `Pratinjau ${item.title}`);
+      }
       modal.setAttribute('aria-hidden', 'false');
-      modal.setAttribute('aria-label', `Pratinjau ${item.title}`);
       modal.classList.add('is-open');
       previousBodyPaddingRight = document.body.style.paddingRight;
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
@@ -115,20 +144,17 @@ const InteractiveGallery = memo(function InteractiveGallery({ filterRef, gallery
       image.addEventListener('click', handler);
       return handler;
     });
-    const onFilter = () => {
-      const type = filter.value;
-      boxes.forEach((box) => { box.hidden = type !== 'all' && box.dataset.galleryType !== type; });
-    };
+
     const onEscape = (event) => { if (event.key === 'Escape') closeGalleryModal(); };
-    filter?.addEventListener('change', onFilter);
     overlay.addEventListener('click', closeGalleryModal);
     modal.querySelector('.gallery-modal-close')?.addEventListener('click', closeGalleryModal);
     document.addEventListener('keydown', onEscape);
 
     return () => {
-      if (activeIndex !== undefined && activeImage) boxes[activeIndex].appendChild(activeImage);
+      if (activeIndex !== undefined && activeImage && boxes[activeIndex]) {
+        boxes[activeIndex].appendChild(activeImage);
+      }
       images.forEach((image, index) => image.removeEventListener('click', imageHandlers[index]));
-      filter?.removeEventListener('change', onFilter);
       overlay.removeEventListener('click', closeGalleryModal);
       modal.querySelector('.gallery-modal-close')?.removeEventListener('click', closeGalleryModal);
       document.removeEventListener('keydown', onEscape);
@@ -138,41 +164,122 @@ const InteractiveGallery = memo(function InteractiveGallery({ filterRef, gallery
       document.body.classList.remove('gallery-modal-open');
       document.body.style.paddingRight = previousBodyPaddingRight;
     };
-  }, [filterRef, galleryItems]);
+  }, [galleryItems]);
 
-  return <>
-    <div className="event-gallery-grid boxes-container" id="event-gallery-grid" ref={gridRef} aria-live="polite">
-      {galleryItems.map((item) => <div className="gallery-box" data-gallery-type={item.type.toLowerCase()} key={item.index}>
-        <button className="gallery-box-content" type="button" aria-label={`Lihat foto: ${item.title}`}><img src={item.image} alt={item.title} loading="lazy" /><span>{item.title}</span></button>
-      </div>)}
-    </div>
-    <div className="gallery-modal" ref={modalRef} aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="gallery-modal-title">
-      <button className="gallery-modal-overlay" type="button" aria-label="Tutup foto" ref={overlayRef} />
-      <section className="gallery-modal-layout"><div className="gallery-modal-media" ref={modalMediaRef} /><div className="gallery-modal-caption"><p className="eyebrow">GALERI TENDA</p><h2 id="gallery-modal-title" ref={titleRef} /><p className="gallery-modal-description" ref={descriptionRef} /><a className="button button-dark gallery-instagram-link" href={instagramUrl} target="_blank" rel="noreferrer" ref={instagramLinkRef}>Lihat Post di IG <span>↗</span></a><button type="button" className="gallery-modal-close">Kembali ke galeri</button></div></section>
-    </div>
-  </>;
+  return (
+    <>
+      <div className="event-gallery-grid boxes-container" id="event-gallery-grid" ref={gridRef} aria-live="polite">
+        {galleryItems.map((item, index) => (
+          <div className="gallery-box" data-gallery-type={(item.type || 'transparan').toLowerCase()} key={item.id || item.index || index}>
+            <button className="gallery-box-content" type="button" aria-label={`Lihat foto: ${item.title}`}>
+              <img src={item.image} alt={item.title} loading="lazy" />
+              <span>{item.title}</span>
+            </button>
+          </div>
+        ))}
+      </div>
+      <div className="gallery-modal" ref={modalRef} aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="gallery-modal-title">
+        <button className="gallery-modal-overlay" type="button" aria-label="Tutup foto" ref={overlayRef} />
+        <section className="gallery-modal-layout">
+          <div className="gallery-modal-media" ref={modalMediaRef} />
+          <div className="gallery-modal-caption">
+            <p className="eyebrow">GALERI TENDA</p>
+            <h2 id="gallery-modal-title" ref={titleRef} />
+            <p className="gallery-modal-description" ref={descriptionRef} />
+            <a className="button button-dark gallery-instagram-link" href={instagramUrl} target="_blank" rel="noreferrer" ref={instagramLinkRef}>
+              Lihat Post di IG <span>↗</span>
+            </a>
+            <button type="button" className="gallery-modal-close">Kembali ke galeri</button>
+          </div>
+        </section>
+      </div>
+    </>
+  );
 });
 
 export default function GalleryClient({ initialItems }) {
-  const filterRef = useRef(null);
+  const [selectedType, setSelectedType] = useState('all');
+  const [visibleCount, setVisibleCount] = useState(20);
 
-  const galleryItems = (initialItems && initialItems.length > 0)
-    ? initialItems.map((item, index) => ({
-        title: item.title,
-        type: item.tent_type,
-        image: item.image_url,
-        postUrl: item.instagram_url || instagramUrl,
-        index,
-      }))
-    : defaultGalleryItems;
+  const allItems = useMemo(() => {
+    return (initialItems && initialItems.length > 0)
+      ? initialItems.map((item, index) => ({
+          id: item.id,
+          title: item.title,
+          type: item.tent_type,
+          image: item.image_url,
+          postUrl: item.instagram_url || instagramUrl,
+          createdAt: item.created_at,
+          index,
+        }))
+      : defaultGalleryItems;
+  }, [initialItems]);
 
-  return <div className="subpage">
-    <SubpageHeader activePage="/galeri" />
-    <main className="gallery-page-main">
-      <div className="gallery-page-heading"><div><p className="eyebrow">INSPIRASI ACARA ARUM TENDA</p><h1>Galeri Tenda</h1></div><label className="gallery-filter-label" htmlFor="gallery-filter"><span>JENIS TENDA</span><select id="gallery-filter" ref={filterRef} defaultValue="all"><option value="all">Semua jenis</option><option value="transparan">Transparan</option><option value="kerut">Kerut</option><option value="blukat">Blukat</option><option value="piramid">Piramid</option></select></label></div>
-      <p className="gallery-page-note">Kumpulan suasana dan inspirasi untuk membantu Anda membayangkan acara yang ingin disiapkan.</p>
-      <InteractiveGallery filterRef={filterRef} galleryItems={galleryItems} />
-    </main>
-    <SubpageFooter activePage="/galeri" />
-  </div>;
+  const filteredItems = useMemo(() => {
+    if (selectedType === 'all') return allItems;
+    return allItems.filter(
+      (item) => (item.type || '').toLowerCase() === selectedType.toLowerCase()
+    );
+  }, [allItems, selectedType]);
+
+  const displayedItems = useMemo(() => {
+    return filteredItems.slice(0, visibleCount);
+  }, [filteredItems, visibleCount]);
+
+  const handleFilterChange = (e) => {
+    setSelectedType(e.target.value);
+    setVisibleCount(20);
+  };
+
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => prev + 20);
+  };
+
+  const remainingCount = filteredItems.length - displayedItems.length;
+
+  return (
+    <div className="subpage">
+      <SubpageHeader activePage="/galeri" />
+      <main className="gallery-page-main">
+        <div className="gallery-page-heading">
+          <div>
+            <p className="eyebrow">INSPIRASI ACARA ARUM TENDA</p>
+            <h1>Galeri Tenda</h1>
+          </div>
+          <label className="gallery-filter-label" htmlFor="gallery-filter">
+            <span>JENIS TENDA</span>
+            <select
+              id="gallery-filter"
+              value={selectedType}
+              onChange={handleFilterChange}
+            >
+              <option value="all">Semua jenis ({allItems.length})</option>
+              <option value="transparan">Transparan</option>
+              <option value="kerut">Kerut</option>
+              <option value="blukat">Blukat</option>
+              <option value="piramid">Piramid</option>
+            </select>
+          </label>
+        </div>
+        <p className="gallery-page-note">
+          Kumpulan suasana dan inspirasi pemasangan tenda asli dari Instagram @arumtendapbg untuk membantu Anda membayangkan acara yang ingin disiapkan.
+        </p>
+
+        <InteractiveGallery galleryItems={displayedItems} />
+
+        {remainingCount > 0 && (
+          <div className="gallery-load-more-container">
+            <button
+              type="button"
+              className="button button-dark gallery-load-more-button"
+              onClick={handleLoadMore}
+            >
+              Muat Lebih Banyak Foto ({remainingCount} lagi) <span>↓</span>
+            </button>
+          </div>
+        )}
+      </main>
+      <SubpageFooter activePage="/galeri" />
+    </div>
+  );
 }
