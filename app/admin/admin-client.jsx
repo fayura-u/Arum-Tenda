@@ -542,6 +542,8 @@ export default function AdminClient({
         <nav className="admin-nav">
           <button
             type="button"
+            aria-label="Katalog Produk"
+            aria-current={activeTab === 'products' ? 'page' : undefined}
             className={`admin-nav-item ${activeTab === 'products' ? 'active' : ''}`}
             onClick={() => setActiveTab('products')}
           >
@@ -555,6 +557,8 @@ export default function AdminClient({
 
           <button
             type="button"
+            aria-label="Galeri Acara"
+            aria-current={activeTab === 'gallery' ? 'page' : undefined}
             className={`admin-nav-item ${activeTab === 'gallery' ? 'active' : ''}`}
             onClick={() => setActiveTab('gallery')}
           >
@@ -568,6 +572,8 @@ export default function AdminClient({
 
           <button
             type="button"
+            aria-label="Media Storage"
+            aria-current={activeTab === 'media' ? 'page' : undefined}
             className={`admin-nav-item ${activeTab === 'media' ? 'active' : ''}`}
             onClick={() => setActiveTab('media')}
           >
