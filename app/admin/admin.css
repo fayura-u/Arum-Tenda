@@ -1356,26 +1356,3 @@
     padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px));
   }
 }
-
-@media (min-width: 861px) {
-  .admin-nav-item.active::before,
-  .admin-nav-item.active::after {
-    position: absolute;
-    right: -12px;
-    z-index: 3;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: #fff;
-    content: '';
-    pointer-events: none;
-  }
-
-  .admin-nav-item.active::before {
-    top: -12px;
-  }
-
-  .admin-nav-item.active::after {
-    bottom: -12px;
-  }
-}
