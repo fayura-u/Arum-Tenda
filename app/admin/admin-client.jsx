@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { gsap } from 'gsap';
+import { Plus } from 'lucide-react';
 import './admin.css';
 import { logoutAdminAction } from '@/app/actions/auth';
 import { createProductAction, updateProductAction, deleteProductAction } from '@/app/actions/catalog';
@@ -641,18 +642,20 @@ export default function AdminClient({
               <button
                 type="button"
                 className="admin-btn admin-btn-primary"
+                aria-label="Tambah produk baru"
                 onClick={openCreateProductModal}
               >
-                <span>＋</span> Tambah Produk Baru
+                <Plus aria-hidden="true" /> Tambah Produk Baru
               </button>
             )}
             {activeTab === 'gallery' && (
               <button
                 type="button"
                 className="admin-btn admin-btn-primary"
+                aria-label="Tambah foto galeri"
                 onClick={openCreateGalleryModal}
               >
-                <span>＋</span> Tambah Foto Galeri
+                <Plus aria-hidden="true" /> Tambah Foto Galeri
               </button>
             )}
             <div className="admin-icon-button" aria-hidden="true">

@@ -1285,11 +1285,12 @@
     font-size: 0;
   }
 
-  .admin-topbar-actions .admin-btn-primary > span:first-child {
+  .admin-topbar-actions .admin-btn-primary > svg {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
     color: #fff;
-    font-size: 22px;
-    font-weight: 400;
-    line-height: 1;
+    stroke-width: 2.5;
   }
 
   .admin-list-tabs {
