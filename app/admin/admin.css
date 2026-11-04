@@ -1495,11 +1495,11 @@
   }
 
   .admin-table .admin-product-thumb {
-    width: 36px;
-    height: 36px;
-    flex: 0 0 36px;
+    width: 108px;
+    height: 108px;
+    flex: 0 0 108px;
     box-sizing: border-box;
-    border: 1px solid #fff;
+    border: 3px solid #fff;
     border-radius: 0;
     object-fit: cover;
   }
@@ -1516,7 +1516,7 @@
   .admin-table tbody td:nth-child(2) {
     grid-area: name;
     align-items: flex-start;
-    justify-content: flex-end;
+    justify-content: center;
   }
 
   .admin-table tbody td:nth-child(3) { grid-area: category; }
