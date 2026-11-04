@@ -1328,6 +1328,7 @@
   .admin-nav-icon {
     justify-content: center;
     gap: 0;
+    transform: translateX(3px);
   }
 
   .admin-nav-icon > span:last-child,
@@ -1354,5 +1355,127 @@
 
   .admin-body {
     padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .admin-table-wrap {
+    overflow: visible;
+    border-top: 0;
+  }
+
+  .admin-table,
+  .admin-table tbody {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .admin-table thead {
+    display: none;
+  }
+
+  .admin-table tbody tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      'photo name'
+      'category date'
+      'price colors'
+      'status actions';
+    gap: 0 12px;
+    margin: 10px 0;
+    padding: 6px 10px;
+    overflow: hidden;
+    border: 1px solid #e9edf4;
+    border-radius: 14px;
+    background: #fff;
+  }
+
+  .admin-table tbody td {
+    display: flex;
+    min-width: 0;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    padding: 9px 3px;
+    border: 0;
+    background: transparent;
+    font-size: 11px;
+    overflow-wrap: anywhere;
+  }
+
+  .admin-table tbody td::before {
+    color: #8b95a7;
+    content: attr(data-label);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+  }
+
+  .admin-table tbody td:nth-child(1) {
+    grid-area: photo;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .admin-table tbody td:nth-child(1)::before,
+  .admin-table tbody td:nth-child(2)::before {
+    display: none;
+  }
+
+  .admin-table tbody td:nth-child(2) {
+    grid-area: name;
+    align-items: flex-start;
+    justify-content: flex-end;
+  }
+
+  .admin-table tbody td:nth-child(3) { grid-area: category; }
+  .admin-table tbody td:nth-child(4) { grid-area: date; }
+  .admin-table tbody td:nth-child(5) { grid-area: price; }
+  .admin-table tbody td:nth-child(6) { grid-area: colors; }
+  .admin-table tbody td:nth-child(7) { grid-area: status; }
+
+  .admin-table tbody td:nth-child(8) {
+    grid-area: actions;
+    align-items: flex-end;
+    white-space: normal !important;
+  }
+
+  .admin-table tbody td[colspan] {
+    display: block;
+    grid-column: 1 / -1;
+    padding: 24px 8px !important;
+    text-align: center;
+  }
+
+  .admin-table tbody td[colspan]::before {
+    display: none;
+  }
+
+  .admin-table tbody td code {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .admin-table tbody td .admin-btn {
+    margin: 0 0 4px !important;
+    padding: 6px 8px;
+    font-size: 10px;
+  }
+
+  .admin-table tr.is-selected td,
+  .admin-table tr.is-selected:hover td {
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .admin-table tbody tr.is-selected {
+    border-color: #104bf5;
+    background: #104bf5;
+  }
+
+  .admin-table tr.is-selected td::before {
+    color: rgba(255, 255, 255, 0.75);
   }
 }

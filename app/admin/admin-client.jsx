@@ -814,10 +814,10 @@ export default function AdminClient({
                             onClick={() => setSelectedRowId(p.id)}
                             onKeyDown={(event) => { if (event.key === 'Enter') setSelectedRowId(p.id); }}
                           >
-                            <td>
+                            <td data-label="Foto">
                               <img src={firstImage} alt={p.name} className="admin-product-thumb" />
                             </td>
-                            <td>
+                            <td data-label="Nama produk">
                               <div style={{ fontWeight: 600, color: 'var(--admin-text-main)' }}>{p.name}</div>
                               <div style={{ fontSize: '11px', color: '#64748b' }}>
                                 <code>/{p.slug}</code>
@@ -830,13 +830,13 @@ export default function AdminClient({
                                 </Link>
                               </div>
                             </td>
-                            <td>
+                            <td data-label="Kategori">
                               <span className="admin-badge admin-badge-neutral">
                                 {p.category?.name || 'Umum'}
                               </span>
                             </td>
-                            <td>{p.created_at ? new Intl.DateTimeFormat('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(p.created_at)) : '-'}</td>
-                            <td>
+                            <td data-label="Tanggal">{p.created_at ? new Intl.DateTimeFormat('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(p.created_at)) : '-'}</td>
+                            <td data-label="Harga">
                               {lowestPrice ? (
                                 <div>
                                   <span style={{ fontWeight: 600 }}>
@@ -851,7 +851,7 @@ export default function AdminClient({
                                 <span style={{ color: '#94a3b8', fontSize: '11px' }}>Belum ada harga</span>
                               )}
                             </td>
-                            <td>
+                            <td data-label="Varian warna">
                               <div className="admin-table-swatches">
                                 {p.colors && p.colors.length > 0 ? (
                                   p.colors.map((c, i) => (
@@ -867,7 +867,7 @@ export default function AdminClient({
                                 )}
                               </div>
                             </td>
-                            <td>
+                            <td data-label="Status">
                               <span
                                 className={`admin-badge ${
                                   p.is_active ? 'admin-badge-success' : 'admin-badge-neutral'
@@ -876,7 +876,7 @@ export default function AdminClient({
                                 {p.is_active ? 'Aktif' : 'Draft'}
                               </span>
                             </td>
-                            <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
+                            <td data-label="Aksi" style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
                               <button
                                 type="button"
                                 className="admin-btn admin-btn-secondary admin-btn-sm"
