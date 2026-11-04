@@ -645,7 +645,8 @@ export default function AdminClient({
                 aria-label="Tambah produk baru"
                 onClick={openCreateProductModal}
               >
-                <Plus aria-hidden="true" /> Tambah Produk Baru
+                <Plus aria-hidden="true" />
+                <span className="admin-btn-label">Tambah Produk Baru</span>
               </button>
             )}
             {activeTab === 'gallery' && (
@@ -655,7 +656,8 @@ export default function AdminClient({
                 aria-label="Tambah foto galeri"
                 onClick={openCreateGalleryModal}
               >
-                <Plus aria-hidden="true" /> Tambah Foto Galeri
+                <Plus aria-hidden="true" />
+                <span className="admin-btn-label">Tambah Foto Galeri</span>
               </button>
             )}
             <div className="admin-icon-button" aria-hidden="true">

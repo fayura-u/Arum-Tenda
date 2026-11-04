@@ -1275,14 +1275,19 @@
   }
 
   .admin-topbar-actions .admin-btn-primary {
+    display: grid;
     width: 36px;
     height: 36px;
     flex: 0 0 36px;
     overflow: hidden;
-    justify-content: center;
+    place-items: center;
+    gap: 0;
     padding: 0;
     border-radius: 9px;
-    font-size: 0;
+  }
+
+  .admin-topbar-actions .admin-btn-primary .admin-btn-label {
+    display: none;
   }
 
   .admin-topbar-actions .admin-btn-primary > svg {
@@ -1305,6 +1310,36 @@
 }
 
 @media (max-width: 640px) {
+  .admin-shell {
+    display: block;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 0;
+    background: #fff;
+  }
+
+  .admin-app {
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .admin-sidebar {
+    border-radius: 0;
+  }
+
+  .admin-brand {
+    width: 100%;
+    background: #104bf5;
+  }
+
+  .admin-content {
+    border-radius: 0;
+  }
+
   .admin-nav {
     position: fixed;
     z-index: 80;
@@ -1348,9 +1383,12 @@
   }
 
   .admin-nav-icon {
-    justify-content: center;
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
     gap: 0;
-    transform: translateX(3px);
+    transform: none;
   }
 
   .admin-nav-icon > span:last-child,
@@ -1366,7 +1404,7 @@
   .admin-nav-item.active::after {
     position: absolute;
     bottom: 1px;
-    left: calc(50% + 3px);
+    left: 50%;
     width: 18px;
     height: 3px;
     transform: translateX(-50%);
