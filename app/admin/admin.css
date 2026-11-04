@@ -674,6 +674,12 @@
 
 /* Media Upload Box */
 .admin-dropzone {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  align-items: center;
+  flex-direction: column;
   border: 2px dashed #cbd5e1;
   border-radius: 8px;
   padding: 30px 20px;
@@ -681,6 +687,12 @@
   background-color: #f8fafc;
   cursor: pointer;
   transition: all 0.2s ease;
+}
+
+.admin-dropzone-text,
+.admin-dropzone-sub {
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 
 .admin-dropzone:hover {
@@ -1263,12 +1275,21 @@
   }
 
   .admin-topbar-actions .admin-btn-primary {
-    width: 35px;
-    height: 35px;
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
     overflow: hidden;
     justify-content: center;
     padding: 0;
+    border-radius: 9px;
     font-size: 0;
+  }
+
+  .admin-topbar-actions .admin-btn-primary > span:first-child {
+    color: #fff;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1;
   }
 
   .admin-list-tabs {
@@ -1344,7 +1365,7 @@
   .admin-nav-item.active::after {
     position: absolute;
     bottom: 1px;
-    left: 50%;
+    left: calc(50% + 3px);
     width: 18px;
     height: 3px;
     transform: translateX(-50%);
@@ -1355,6 +1376,21 @@
 
   .admin-body {
     padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .admin-media-grid,
+  .admin-media-grid > .admin-card {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .admin-media-grid > .admin-card {
+    padding: 18px !important;
+  }
+
+  .admin-dropzone {
+    gap: 4px;
+    padding: 22px 12px;
   }
 
   .admin-table-wrap {
