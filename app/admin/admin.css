@@ -1549,6 +1549,29 @@
     border-radius: 0;
   }
 
+  .admin-topbar-actions .admin-btn-primary {
+    position: fixed;
+    z-index: 79;
+    right: 20px;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 108px);
+    width: 56px;
+    height: 56px;
+    flex: 0 0 56px;
+    border-radius: 50%;
+    background: #104bf5;
+    box-shadow: 0 8px 22px rgba(16, 75, 245, 0.35);
+  }
+
+  .admin-topbar-actions .admin-btn-primary .admin-btn-label {
+    display: none;
+  }
+
+  .admin-topbar-actions .admin-btn-primary > svg {
+    width: 26px;
+    height: 26px;
+    flex-basis: 26px;
+  }
+
   .admin-nav {
     position: fixed;
     z-index: 80;
@@ -1623,7 +1646,7 @@
   }
 
   .admin-body {
-    padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(184px + env(safe-area-inset-bottom, 0px));
   }
 
   .admin-media-grid,
