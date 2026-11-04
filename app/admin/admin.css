@@ -1490,8 +1490,22 @@
 
   .admin-table tbody td:nth-child(1) {
     grid-area: photo;
-    align-items: center;
-    justify-content: flex-end;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .admin-table .admin-product-thumb {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+    box-sizing: border-box;
+    border: 1px solid #fff;
+    border-radius: 0;
+    object-fit: cover;
+  }
+
+  .admin-table tr.is-selected .admin-product-thumb {
+    border-color: #fff;
   }
 
   .admin-table tbody td:nth-child(1)::before,
