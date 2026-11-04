@@ -1524,7 +1524,7 @@
     min-height: 100vh;
     min-height: 100dvh;
     padding: 0;
-    background: #fff;
+    background: #f7f3eb;
   }
 
   .admin-app {
@@ -1534,6 +1534,9 @@
     margin: 0;
     border-radius: 0;
     box-shadow: none;
+    background: #f7f3eb;
+    --admin-bg: #f7f3eb;
+    --admin-card: #fff;
   }
 
   .admin-sidebar {
@@ -1547,6 +1550,11 @@
 
   .admin-content {
     border-radius: 0;
+    background: #f7f3eb;
+  }
+
+  .admin-topbar {
+    background: #f7f3eb;
   }
 
   .admin-topbar-actions .admin-btn-primary {
@@ -1692,7 +1700,7 @@
     margin: 10px 0;
     padding: 6px 10px;
     overflow: hidden;
-    border: 1px solid #e9edf4;
+    border: 1px solid #ece5d9;
     border-radius: 14px;
     background: #fff;
   }
