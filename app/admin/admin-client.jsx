@@ -1300,14 +1300,15 @@ export default function AdminClient({
                 </div>
 
                 {/* 3. VARIAN WARNA & GAMBAR */}
-                <div className="admin-form-section">
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div className="admin-form-section admin-color-section">
+                  <div className="admin-color-section-heading">
                     <h4 className="admin-form-section-title" style={{ border: 'none', margin: 0 }}>
                       3. Varian Warna &amp; Visual Produk
                     </h4>
                     <button
                       type="button"
-                      className="admin-btn admin-btn-secondary admin-btn-sm"
+                      className="admin-btn admin-btn-secondary admin-btn-sm admin-add-variant"
+                      aria-label="Tambah Varian Warna"
                       onClick={addColorRow}
                     >
                       ＋ Tambah Varian Warna
@@ -1315,12 +1316,13 @@ export default function AdminClient({
                   </div>
 
                   {prodForm.colors.map((colorItem, idx) => (
-                    <div key={idx} className="admin-dynamic-row">
+                    <div key={idx} className="admin-dynamic-row admin-color-row">
                       <div className="admin-dynamic-row-header">
                         <strong style={{ fontSize: '11px', color: '#64748b' }}>VARIAN WARNA #{idx + 1}</strong>
                         {prodForm.colors.length > 1 && (
                           <button
                             type="button"
+                            className="admin-color-remove"
                             onClick={() => removeColorRow(idx)}
                             style={{
                               background: 'none',
@@ -1336,7 +1338,7 @@ export default function AdminClient({
                         )}
                       </div>
 
-                      <div style={{ display: 'grid', gridTemplateColumns: 'auto 1.2fr 2fr', gap: '10px', alignItems: 'center' }}>
+                      <div className="admin-color-fields">
                         <div>
                           <label className="admin-form-label">Kode Warna</label>
                           <input
@@ -1369,7 +1371,7 @@ export default function AdminClient({
 
                         <div className="admin-form-group">
                           <label className="admin-form-label">URL Foto / Unggah Langsung</label>
-                          <div style={{ display: 'flex', gap: '6px' }}>
+                          <div className="admin-color-upload-row">
                             <input
                               type="text"
                               className="admin-form-input"
@@ -1379,7 +1381,7 @@ export default function AdminClient({
                               style={{ flex: 1 }}
                             />
                             <label
-                              className="admin-btn admin-btn-secondary admin-btn-sm"
+                              className="admin-btn admin-btn-secondary admin-btn-sm admin-color-upload"
                               style={{ whiteSpace: 'nowrap', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
                             >
                               📁 Upload

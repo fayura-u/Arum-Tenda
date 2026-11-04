@@ -1310,6 +1310,215 @@
 }
 
 @media (max-width: 640px) {
+  .admin-modal-backdrop {
+    display: block;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .admin-modal-panel {
+    width: 100%;
+    max-width: none;
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+    animation: none;
+  }
+
+  .admin-modal-head {
+    flex: 0 0 auto;
+    gap: 12px;
+    padding: 18px 16px;
+  }
+
+  .admin-modal-head h3 {
+    min-width: 0;
+    font-size: 19px;
+    overflow-wrap: anywhere;
+  }
+
+  .admin-modal-body {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+    padding: 18px 16px 24px;
+    gap: 24px;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+  }
+
+  .admin-modal-body > *,
+  .admin-form-section,
+  .admin-form-group,
+  .admin-dynamic-row {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .admin-form-section {
+    gap: 14px;
+  }
+
+  .admin-form-row,
+  .admin-dynamic-row-grid,
+  .admin-color-fields {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .admin-form-label,
+  .admin-form-section-title {
+    font-size: 14px;
+  }
+
+  .admin-form-input,
+  .admin-form-select,
+  .admin-form-textarea {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    font-size: 16px;
+  }
+
+  .admin-dynamic-row {
+    gap: 14px;
+    padding: 14px;
+    overflow: hidden;
+  }
+
+  .admin-dynamic-row-header {
+    min-width: 0;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .admin-dynamic-row-header strong {
+    font-size: 13px !important;
+  }
+
+  .admin-color-row .admin-dynamic-row-header strong {
+    font-size: 13px !important;
+    overflow-wrap: anywhere;
+  }
+
+  .admin-color-remove {
+    max-width: 100%;
+    padding: 8px 10px !important;
+    border: 1px solid #fecdd3 !important;
+    border-radius: 7px !important;
+    background: #fff1f2 !important;
+    color: #b42332 !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    white-space: normal !important;
+    cursor: pointer !important;
+  }
+
+  .admin-color-fields {
+    display: grid;
+    min-width: 0;
+  }
+
+  .admin-color-fields > * {
+    min-width: 0;
+  }
+
+  .admin-color-upload-row {
+    display: grid;
+    min-width: 0;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .admin-color-upload-row > input {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .admin-color-upload {
+    min-height: 42px;
+    padding: 8px 10px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .admin-color-preview {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 4px;
+  }
+
+  .admin-color-preview-caption {
+    min-width: 0;
+    color: #64748b;
+    font-size: 12px !important;
+    overflow-wrap: anywhere;
+  }
+
+  .admin-color-section {
+    position: relative;
+    padding-bottom: 56px;
+  }
+
+  .admin-color-section-heading {
+    display: flex;
+    min-width: 0;
+    align-items: flex-start;
+  }
+
+  .admin-color-section-heading .admin-form-section-title {
+    line-height: 1.4;
+  }
+
+  .admin-add-variant {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    min-height: 44px;
+    padding: 10px 14px;
+    border-radius: 9px;
+    font-size: 0;
+    white-space: nowrap;
+  }
+
+  .admin-add-variant::before {
+    color: #104bf5;
+    content: '+';
+    font-size: 23px;
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  .admin-add-variant::after {
+    content: attr(aria-label);
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .admin-modal-foot {
+    flex: 0 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: 10px;
+    padding: 14px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .admin-modal-foot .admin-btn {
+    min-width: 0;
+    justify-content: center;
+    padding: 11px 8px;
+    font-size: 14px;
+    white-space: normal;
+  }
+
   .admin-shell {
     display: block;
     min-height: 100vh;
