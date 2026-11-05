@@ -743,7 +743,7 @@ export default function AdminClient({
           {/* ============================================================ */}
           {activeTab === 'products' && (
             <div className="admin-view">
-            <div className="admin-card">
+            <div className="admin-card admin-product-list-card">
               <div className="admin-list-tabs" role="tablist" aria-label="Filter status produk">
                 <button type="button" role="tab" aria-selected={statusFilter === 'all'} className={statusFilter === 'all' ? 'active' : ''} onClick={() => setStatusFilter('all')}>Semua produk <span>{products.length}</span></button>
                 <button type="button" role="tab" aria-selected={statusFilter === 'active'} className={statusFilter === 'active' ? 'active' : ''} onClick={() => setStatusFilter('active')}>Aktif <span>{products.filter((product) => product.is_active).length}</span></button>

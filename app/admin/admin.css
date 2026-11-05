@@ -1537,6 +1537,7 @@
     background: #f7f3eb;
     --admin-bg: #f7f3eb;
     --admin-card: #fff;
+    overflow: visible;
   }
 
   .admin-sidebar {
@@ -1551,6 +1552,26 @@
   .admin-content {
     border-radius: 0;
     background: #f7f3eb;
+  }
+
+  .admin-product-list-card {
+    background: transparent;
+  }
+
+  .admin-product-list-card .admin-list-tabs {
+    background: transparent;
+  }
+
+  .admin-product-list-card .admin-card-header {
+    margin-bottom: 10px;
+    padding: 12px;
+    border-radius: 12px;
+    background: #fff;
+  }
+
+  .admin-product-list-card .admin-table-wrap {
+    border: 0;
+    background: transparent;
   }
 
   .admin-topbar {
@@ -1582,9 +1603,9 @@
 
   .admin-nav {
     position: fixed;
-    z-index: 80;
+    z-index: 1000;
     right: auto;
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
     left: 50%;
     width: min(360px, calc(100vw - 32px));
     height: 76px;
