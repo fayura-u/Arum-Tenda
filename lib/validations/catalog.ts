@@ -102,6 +102,7 @@ export const GalleryFormSchema = z.object({
     .optional()
     .or(z.literal('')),
   is_featured: z.boolean().default(false),
+  created_at: z.string().optional(),
 });
 
 export type PriceItemInput = z.infer<typeof PriceItemSchema>;

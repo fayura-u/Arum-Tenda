@@ -1,15 +1,235 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { gsap } from 'gsap';
-import { Plus } from 'lucide-react';
+import { Plus, Pencil, Trash2, ExternalLink, Star } from 'lucide-react';
 import './admin.css';
 import { logoutAdminAction } from '@/app/actions/auth';
 import { createProductAction, updateProductAction, deleteProductAction } from '@/app/actions/catalog';
-import { createGalleryItemAction, deleteGalleryItemAction } from '@/app/actions/gallery';
+import {
+  createGalleryItemAction,
+  updateGalleryItemAction,
+  deleteGalleryItemAction,
+} from '@/app/actions/gallery';
 import { uploadProductImage } from '@/app/actions/media';
+
+/**
+ * Komponen Input Foto Interaktif: Drag & Drop + Preview langsung
+ * File disimpan di state lokal terlebih dahulu, dan baru diunggah saat tombol Simpan diklik.
+ */
+function ImageDropzone({
+  previewUrl,
+  hasPendingFile,
+  onFileSelect,
+  onRemove,
+  height = '150px',
+  label = 'Tarik & lepas foto ke sini, atau',
+  sublabel = 'klik untuk memilih file (JPEG, PNG, WEBP maks 5MB)',
+}) {
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef(null);
+
+  function handleDragOver(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  }
+
+  function handleDragLeave(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  }
+
+  function handleDrop(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      onFileSelect(file);
+    }
+  }
+
+  function handleInputChange(e) {
+    const file = e.target.files?.[0];
+    if (file) {
+      onFileSelect(file);
+      e.target.value = '';
+    }
+  }
+
+  if (previewUrl) {
+    return (
+      <div
+        className="admin-dropzone-preview-container"
+        onClick={() => fileInputRef.current?.click()}
+        onDragOver={handleDragOver}
+        onDragEnter={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        style={{
+          position: 'relative',
+          width: '100%',
+          height,
+          borderRadius: '8px',
+          overflow: 'hidden',
+          border: isDragging ? '2px dashed #104bf5' : '1px solid #cbd5e1',
+          backgroundColor: '#0f172a',
+          cursor: 'pointer',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+        }}
+        title="Klik atau seret file baru ke sini untuk mengganti foto"
+      >
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          style={{ display: 'none' }}
+          onChange={handleInputChange}
+        />
+        <img
+          src={previewUrl}
+          alt="Pratinjau"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            display: 'block',
+            opacity: isDragging ? 0.35 : 1,
+            transition: 'opacity 0.2s ease',
+          }}
+        />
+
+        {/* Overlay bar info & actions */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            padding: '8px 12px',
+            background: 'linear-gradient(to top, rgba(15,23,42,0.92) 0%, rgba(15,23,42,0.6) 75%, transparent 100%)',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            color: '#fff',
+            zIndex: 2,
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            {hasPendingFile ? (
+              <span style={{ fontSize: '11px', color: '#fde047', fontWeight: 600 }}>
+                ⏳ Foto dipilih (upload saat simpan)
+              </span>
+            ) : (
+              <span style={{ fontSize: '11px', color: '#86efac', fontWeight: 600 }}>
+                ✓ Foto tersimpan
+              </span>
+            )}
+          </div>
+
+          <div style={{ display: 'flex', gap: '6px' }}>
+            <button
+              type="button"
+              className="admin-btn admin-btn-sm admin-btn-secondary"
+              style={{
+                padding: '4px 9px',
+                fontSize: '11px',
+                background: 'rgba(255,255,255,0.2)',
+                border: '1px solid rgba(255,255,255,0.3)',
+                color: '#fff',
+              }}
+              onClick={() => fileInputRef.current?.click()}
+              title="Ganti foto dengan file lain"
+            >
+              🔄 Ganti
+            </button>
+            <button
+              type="button"
+              className="admin-btn admin-btn-sm admin-btn-danger"
+              style={{ padding: '4px 9px', fontSize: '11px' }}
+              onClick={(e) => {
+                e.stopPropagation();
+                onRemove();
+              }}
+              title="Hapus foto"
+            >
+              ✕ Hapus
+            </button>
+          </div>
+        </div>
+
+        {isDragging && (
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              display: 'grid',
+              placeItems: 'center',
+              background: 'rgba(16, 75, 245, 0.65)',
+              color: '#fff',
+              fontWeight: 700,
+              fontSize: '13px',
+              zIndex: 3,
+            }}
+          >
+            Lepaskan file untuk mengganti foto
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className={`admin-image-dropzone ${isDragging ? 'is-dragging' : ''}`}
+      onClick={() => fileInputRef.current?.click()}
+      onDragOver={handleDragOver}
+      onDragEnter={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+      style={{
+        cursor: 'pointer',
+        border: isDragging ? '2px dashed #104bf5' : '2px dashed #cbd5e1',
+        backgroundColor: isDragging ? '#eff6ff' : '#f8fafc',
+        borderRadius: '8px',
+        padding: '20px 16px',
+        textAlign: 'center',
+        transition: 'all 0.2s ease',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '6px',
+        minHeight: height,
+        position: 'relative',
+      }}
+      title="Klik untuk memilih file atau seret file ke sini"
+    >
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        style={{ display: 'none' }}
+        onChange={handleInputChange}
+      />
+      <span style={{ fontSize: '26px' }}>📸</span>
+      <div>
+        <p style={{ margin: 0, fontSize: '12px', fontWeight: 600, color: '#334155' }}>
+          {label}{' '}
+          <span style={{ color: '#104bf5', textDecoration: 'underline' }}>klik untuk memilih</span>
+        </p>
+        <span style={{ fontSize: '10px', color: '#94a3b8' }}>
+          {sublabel}
+        </span>
+      </div>
+    </div>
+  );
+}
 
 export default function AdminClient({
   initialUser,
@@ -51,6 +271,7 @@ export default function AdminClient({
 
   // Gallery filters
   const [galleryTypeFilter, setGalleryTypeFilter] = useState('all');
+  const [gallerySearchQuery, setGallerySearchQuery] = useState('');
 
   // Product Modal State
   const [productModalOpen, setProductModalOpen] = useState(false);
@@ -65,16 +286,20 @@ export default function AdminClient({
     description: '',
     is_active: true,
     prices: [{ spec_name: 'Standar Bentang 10m', price: 85000, unit: 'm²', min_order: 1, notes: '', order_position: 1 }],
-    colors: [{ color_name: 'Putih Bersih', hex_code: '#ffffff', image_url: '', order_position: 1 }],
+    colors: [{ color_name: 'Putih Bersih', hex_code: '#ffffff', image_url: '', file: null, previewUrl: '', order_position: 1 }],
   });
 
   // Gallery Modal State
   const [galleryModalOpen, setGalleryModalOpen] = useState(false);
+  const [editingGallery, setEditingGallery] = useState(null);
   const [submittingGallery, setSubmittingGallery] = useState(false);
   const [galleryForm, setGalleryForm] = useState({
     title: '',
     tent_type: 'transparan',
+    event_date: new Date().toISOString().split('T')[0],
     image_url: '',
+    file: null,
+    previewUrl: '',
     instagram_url: '',
     is_featured: false,
   });
@@ -108,7 +333,30 @@ export default function AdminClient({
     });
   }, [products, searchQuery, categoryFilter, statusFilter]);
 
-  const productPageSize = 6;
+  const [productPageSizeMode, setProductPageSizeMode] = useState('auto');
+  const [productPageSize, setProductPageSize] = useState(6);
+
+  useEffect(() => {
+    function calculateFittingProductRows() {
+      if (productPageSizeMode !== 'auto') return;
+      if (typeof window === 'undefined') return;
+      if (window.innerWidth <= 768) {
+        setProductPageSize(5);
+        return;
+      }
+      const vh = window.innerHeight;
+      const overhead = 425;
+      const rowHeight = 65;
+      const available = Math.max(150, vh - overhead);
+      const optimal = Math.max(4, Math.min(15, Math.floor(available / rowHeight)));
+      setProductPageSize(optimal);
+    }
+
+    calculateFittingProductRows();
+    window.addEventListener('resize', calculateFittingProductRows);
+    return () => window.removeEventListener('resize', calculateFittingProductRows);
+  }, [productPageSizeMode, activeTab]);
+
   const productPageCount = Math.max(1, Math.ceil(filteredProducts.length / productPageSize));
   const paginationStart = Math.max(1, Math.min(productPage - 2, productPageCount - 4));
   const visibleProductPages = Array.from(
@@ -122,7 +370,7 @@ export default function AdminClient({
 
   useEffect(() => {
     setProductPage(1);
-  }, [searchQuery, categoryFilter, statusFilter]);
+  }, [searchQuery, categoryFilter, statusFilter, productPageSize]);
 
   useEffect(() => {
     setProductPage((page) => Math.min(page, productPageCount));
@@ -145,9 +393,59 @@ export default function AdminClient({
   // -------------------------------------------------------------
   const filteredGallery = useMemo(() => {
     return gallery.filter((g) => {
-      return galleryTypeFilter === 'all' || g.tent_type.toLowerCase() === galleryTypeFilter.toLowerCase();
+      const matchesType =
+        galleryTypeFilter === 'all' ||
+        g.tent_type?.toLowerCase() === galleryTypeFilter.toLowerCase();
+      const matchesSearch =
+        !gallerySearchQuery.trim() ||
+        g.title?.toLowerCase().includes(gallerySearchQuery.toLowerCase());
+      return matchesType && matchesSearch;
     });
-  }, [gallery, galleryTypeFilter]);
+  }, [gallery, galleryTypeFilter, gallerySearchQuery]);
+
+  const [galleryPage, setGalleryPage] = useState(1);
+  const [galleryPageSizeMode, setGalleryPageSizeMode] = useState('auto');
+  const [galleryPageSize, setGalleryPageSize] = useState(5);
+
+  useEffect(() => {
+    function calculateFittingGalleryRows() {
+      if (galleryPageSizeMode !== 'auto') return;
+      if (typeof window === 'undefined') return;
+      if (window.innerWidth <= 768) {
+        setGalleryPageSize(5);
+        return;
+      }
+      const vh = window.innerHeight;
+      const overhead = 425;
+      const rowHeight = 68;
+      const available = Math.max(150, vh - overhead);
+      const optimal = Math.max(4, Math.min(15, Math.floor(available / rowHeight)));
+      setGalleryPageSize(optimal);
+    }
+
+    calculateFittingGalleryRows();
+    window.addEventListener('resize', calculateFittingGalleryRows);
+    return () => window.removeEventListener('resize', calculateFittingGalleryRows);
+  }, [galleryPageSizeMode, activeTab]);
+
+  const galleryPageCount = Math.max(1, Math.ceil(filteredGallery.length / galleryPageSize));
+  const galleryPaginationStart = Math.max(1, Math.min(galleryPage - 2, galleryPageCount - 4));
+  const visibleGalleryPages = Array.from(
+    { length: Math.min(5, galleryPageCount) },
+    (_, index) => galleryPaginationStart + index,
+  );
+  const paginatedGallery = filteredGallery.slice(
+    (galleryPage - 1) * galleryPageSize,
+    galleryPage * galleryPageSize,
+  );
+
+  useEffect(() => {
+    setGalleryPage(1);
+  }, [gallerySearchQuery, galleryTypeFilter, galleryPageSize]);
+
+  useEffect(() => {
+    setGalleryPage((page) => Math.min(page, galleryPageCount));
+  }, [galleryPageCount]);
 
   // -------------------------------------------------------------
   // LOGOUT HANDLER
@@ -177,7 +475,7 @@ export default function AdminClient({
         { spec_name: 'Standar Bentang 10m', price: 85000, unit: 'm²', min_order: 1, notes: '', order_position: 1 },
       ],
       colors: [
-        { color_name: 'Putih Bersih', hex_code: '#ffffff', image_url: '', order_position: 1 },
+        { color_name: 'Putih Bersih', hex_code: '#ffffff', image_url: '', file: null, previewUrl: '', order_position: 1 },
       ],
     });
     setProductModalOpen(true);
@@ -208,9 +506,11 @@ export default function AdminClient({
               color_name: c.color_name,
               hex_code: c.hex_code,
               image_url: c.image_url || '',
+              file: null,
+              previewUrl: c.image_url || '',
               order_position: c.order_position ?? idx + 1,
             }))
-          : [{ color_name: 'Putih Bersih', hex_code: '#ffffff', image_url: '', order_position: 1 }],
+          : [{ color_name: 'Putih Bersih', hex_code: '#ffffff', image_url: '', file: null, previewUrl: '', order_position: 1 }],
     });
     setProductModalOpen(true);
   }
@@ -276,6 +576,8 @@ export default function AdminClient({
           color_name: '',
           hex_code: '#ece7da',
           image_url: '',
+          file: null,
+          previewUrl: '',
           order_position: prev.colors.length + 1,
         },
       ],
@@ -301,21 +603,32 @@ export default function AdminClient({
     });
   }
 
-  // Upload foto langsung untuk varian warna tertentu
-  async function handleColorImageUpload(index, file) {
+  // Pilih foto varian (preview lokal, upload ditunda sampai submit)
+  function handleColorImageSelect(index, file) {
     if (!file) return;
-    const formData = new FormData();
-    formData.append('file', file);
+    const previewUrl = URL.createObjectURL(file);
+    setProdForm((prev) => {
+      const next = [...prev.colors];
+      next[index] = {
+        ...next[index],
+        file,
+        previewUrl,
+      };
+      return { ...prev, colors: next };
+    });
+  }
 
-    setFeedback({ type: 'info', text: 'Mengunggah gambar ke bucket arum-media...' });
-    const res = await uploadProductImage(formData);
-
-    if (res.success && res.url) {
-      updateColorRow(index, 'image_url', res.url);
-      setFeedback({ type: 'success', text: 'Gambar varian berhasil diunggah!' });
-    } else {
-      setFeedback({ type: 'error', text: res.error || 'Gagal mengunggah foto varian.' });
-    }
+  function handleColorImageRemove(index) {
+    setProdForm((prev) => {
+      const next = [...prev.colors];
+      next[index] = {
+        ...next[index],
+        file: null,
+        previewUrl: '',
+        image_url: '',
+      };
+      return { ...prev, colors: next };
+    });
   }
 
   // Submit Simpan / Update Produk
@@ -323,6 +636,39 @@ export default function AdminClient({
     e.preventDefault();
     setSubmittingProduct(true);
     setFeedback(null);
+
+    // Unggah foto varian yang dipilih (jika ada file baru)
+    const finalColors = [];
+    for (let i = 0; i < prodForm.colors.length; i++) {
+      const c = prodForm.colors[i];
+      let imageUrl = c.image_url?.trim() || null;
+
+      if (c.file) {
+        setFeedback({
+          type: 'info',
+          text: `Mengunggah foto varian "${c.color_name || i + 1}" ke penyimpanan...`,
+        });
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', c.file);
+        const uploadRes = await uploadProductImage(uploadFormData);
+        if (!uploadRes.success || !uploadRes.url) {
+          setFeedback({
+            type: 'error',
+            text: `Gagal mengunggah foto varian "${c.color_name}": ${uploadRes.error}`,
+          });
+          setSubmittingProduct(false);
+          return;
+        }
+        imageUrl = uploadRes.url;
+      }
+
+      finalColors.push({
+        color_name: c.color_name.trim(),
+        hex_code: c.hex_code.trim(),
+        image_url: imageUrl,
+        order_position: i + 1,
+      });
+    }
 
     const payload = {
       name: prodForm.name.trim(),
@@ -338,12 +684,7 @@ export default function AdminClient({
         notes: p.notes?.trim() || null,
         order_position: i + 1,
       })),
-      colors: prodForm.colors.map((c, i) => ({
-        color_name: c.color_name.trim(),
-        hex_code: c.hex_code.trim(),
-        image_url: c.image_url?.trim() || null,
-        order_position: i + 1,
-      })),
+      colors: finalColors,
     };
 
     let res;
@@ -420,30 +761,60 @@ export default function AdminClient({
   // GALLERY HANDLERS
   // -------------------------------------------------------------
   function openCreateGalleryModal() {
+    setEditingGallery(null);
     setGalleryForm({
       title: '',
       tent_type: 'transparan',
+      event_date: new Date().toISOString().split('T')[0],
       image_url: '',
+      file: null,
+      previewUrl: '',
       instagram_url: '',
       is_featured: false,
     });
     setGalleryModalOpen(true);
   }
 
-  async function handleGalleryImageUpload(file) {
-    if (!file) return;
-    const formData = new FormData();
-    formData.append('file', file);
-
-    setFeedback({ type: 'info', text: 'Mengunggah foto galeri...' });
-    const res = await uploadProductImage(formData);
-
-    if (res.success && res.url) {
-      setGalleryForm((prev) => ({ ...prev, image_url: res.url }));
-      setFeedback({ type: 'success', text: 'Foto galeri berhasil diunggah ke storage!' });
-    } else {
-      setFeedback({ type: 'error', text: res.error || 'Gagal mengunggah foto.' });
+  function openEditGalleryModal(item) {
+    setEditingGallery(item);
+    let dateStr = new Date().toISOString().split('T')[0];
+    if (item.created_at) {
+      try {
+        dateStr = new Date(item.created_at).toISOString().split('T')[0];
+      } catch (err) {
+        // ignore
+      }
     }
+    setGalleryForm({
+      title: item.title || '',
+      tent_type: item.tent_type || 'transparan',
+      event_date: dateStr,
+      image_url: item.image_url || '',
+      file: null,
+      previewUrl: item.image_url || '',
+      instagram_url: item.instagram_url || '',
+      is_featured: Boolean(item.is_featured),
+    });
+    setGalleryModalOpen(true);
+  }
+
+  function handleGalleryImageSelect(file) {
+    if (!file) return;
+    const previewUrl = URL.createObjectURL(file);
+    setGalleryForm((prev) => ({
+      ...prev,
+      file,
+      previewUrl,
+    }));
+  }
+
+  function handleGalleryImageRemove() {
+    setGalleryForm((prev) => ({
+      ...prev,
+      file: null,
+      previewUrl: '',
+      image_url: '',
+    }));
   }
 
   async function handleSubmitGallery(e) {
@@ -451,27 +822,68 @@ export default function AdminClient({
     setSubmittingGallery(true);
     setFeedback(null);
 
+    let finalImageUrl = galleryForm.image_url?.trim() || '';
+
+    // Unggah file jika ada file baru yang dipilih (baru diunggah saat tombol simpan diklik)
+    if (galleryForm.file) {
+      setFeedback({ type: 'info', text: 'Mengunggah foto galeri ke penyimpanan...' });
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', galleryForm.file);
+      const uploadRes = await uploadProductImage(uploadFormData);
+      if (!uploadRes.success || !uploadRes.url) {
+        setFeedback({ type: 'error', text: uploadRes.error || 'Gagal mengunggah foto galeri.' });
+        setSubmittingGallery(false);
+        return;
+      }
+      finalImageUrl = uploadRes.url;
+    }
+
+    if (!finalImageUrl) {
+      setFeedback({ type: 'error', text: 'Silakan pilih foto galeri terlebih dahulu.' });
+      setSubmittingGallery(false);
+      return;
+    }
+
     const payload = {
       title: galleryForm.title.trim(),
       tent_type: galleryForm.tent_type,
-      image_url: galleryForm.image_url.trim(),
+      image_url: finalImageUrl,
       instagram_url: galleryForm.instagram_url.trim() || null,
       is_featured: galleryForm.is_featured,
+      created_at: galleryForm.event_date
+        ? new Date(galleryForm.event_date + 'T12:00:00Z').toISOString()
+        : new Date().toISOString(),
     };
 
-    const res = await createGalleryItemAction(payload);
+    let res;
+    if (editingGallery) {
+      res = await updateGalleryItemAction(editingGallery.id, payload);
+    } else {
+      res = await createGalleryItemAction(payload);
+    }
     setSubmittingGallery(false);
 
     if (res.success) {
-      setFeedback({ type: 'success', text: `Foto "${payload.title}" berhasil ditambahkan ke Galeri!` });
+      setFeedback({
+        type: 'success',
+        text: editingGallery
+          ? `Foto "${payload.title}" berhasil diperbarui!`
+          : `Foto "${payload.title}" berhasil ditambahkan ke Galeri!`,
+      });
       setGalleryModalOpen(false);
-      setGallery((prev) => [
-        {
-          id: res.data?.id || `new-gal-${Date.now()}`,
-          ...payload,
-        },
-        ...prev,
-      ]);
+      if (editingGallery) {
+        setGallery((prev) =>
+          prev.map((g) => (g.id === editingGallery.id ? { ...g, ...payload } : g))
+        );
+      } else {
+        setGallery((prev) => [
+          {
+            id: res.data?.id || `new-gal-${Date.now()}`,
+            ...payload,
+          },
+          ...prev,
+        ]);
+      }
       router.refresh();
     } else {
       setFeedback({ type: 'error', text: res.error || 'Gagal menyimpan item galeri.' });
@@ -571,20 +983,7 @@ export default function AdminClient({
             <span className="admin-nav-badge">{gallery.length}</span>
           </button>
 
-          <button
-            type="button"
-            aria-label="Media Storage"
-            aria-current={activeTab === 'media' ? 'page' : undefined}
-            className={`admin-nav-item ${activeTab === 'media' ? 'active' : ''}`}
-            onClick={() => setActiveTab('media')}
-          >
-            <span className="admin-nav-icon">
-              <span>📁</span>
-              <i className="bi bi-cloud-arrow-up" aria-hidden="true" />
-              <span>Media Storage</span>
-            </span>
-            <span className="admin-nav-badge">5 MB</span>
-          </button>
+          {/* Tab Media Storage disembunyikan dari tampilan UI sesuai Opsi 1 (kode fungsi tetap dipertahankan) */}
         </nav>
 
         <div className="admin-sidebar-footer">
@@ -884,18 +1283,22 @@ export default function AdminClient({
                             <td data-label="Aksi" style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
                               <button
                                 type="button"
-                                className="admin-btn admin-btn-secondary admin-btn-sm"
+                                className="admin-btn admin-btn-secondary admin-btn-sm admin-btn-icon"
                                 style={{ marginRight: '6px' }}
                                 onClick={() => openEditProductModal(p)}
+                                title="Ubah produk"
+                                aria-label="Ubah produk"
                               >
-                                ✏️ Ubah
+                                <Pencil size={14} />
                               </button>
                               <button
                                 type="button"
-                                className="admin-btn admin-btn-danger admin-btn-sm"
+                                className="admin-btn admin-btn-danger admin-btn-sm admin-btn-icon"
                                 onClick={() => handleDeleteProduct(p.id, p.name)}
+                                title="Hapus produk"
+                                aria-label="Hapus produk"
                               >
-                                🗑️ Hapus
+                                <Trash2 size={14} />
                               </button>
                             </td>
                           </tr>
@@ -907,12 +1310,35 @@ export default function AdminClient({
               </div>
               <div className="admin-table-footer">
                 <span>Menampilkan {filteredProducts.length ? (productPage - 1) * productPageSize + 1 : 0}–{Math.min(productPage * productPageSize, filteredProducts.length)} dari {filteredProducts.length} produk</span>
-                <div className="admin-pagination" aria-label="Halaman produk">
-                  <button type="button" onClick={() => setProductPage((page) => Math.max(1, page - 1))} disabled={productPage === 1} aria-label="Halaman sebelumnya"><i className="bi bi-chevron-left" aria-hidden="true" /></button>
-                  {visibleProductPages.map((page) => (
-                    <button key={page} type="button" className={productPage === page ? 'active' : ''} onClick={() => setProductPage(page)}>{page}</button>
-                  ))}
-                  <button type="button" onClick={() => setProductPage((page) => Math.min(productPageCount, page + 1))} disabled={productPage >= productPageCount} aria-label="Halaman berikutnya"><i className="bi bi-chevron-right" aria-hidden="true" /></button>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ fontSize: '10px', color: '#64748b' }}>Baris:</span>
+                    <select
+                      className="admin-select"
+                      style={{ padding: '2px 8px', fontSize: '11px', height: '26px', minWidth: 'auto', background: '#fff' }}
+                      value={productPageSizeMode}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setProductPageSizeMode(val);
+                        if (val !== 'auto') setProductPageSize(Number(val));
+                        setProductPage(1);
+                      }}
+                      title="Pilih jumlah baris per halaman"
+                    >
+                      <option value="auto">Auto ({productPageSize})</option>
+                      <option value="5">5</option>
+                      <option value="8">8</option>
+                      <option value="10">10</option>
+                      <option value="15">15</option>
+                    </select>
+                  </div>
+                  <div className="admin-pagination" aria-label="Halaman produk">
+                    <button type="button" onClick={() => setProductPage((page) => Math.max(1, page - 1))} disabled={productPage === 1} aria-label="Halaman sebelumnya"><i className="bi bi-chevron-left" aria-hidden="true" /></button>
+                    {visibleProductPages.map((page) => (
+                      <button key={page} type="button" className={productPage === page ? 'active' : ''} onClick={() => setProductPage(page)}>{page}</button>
+                    ))}
+                    <button type="button" onClick={() => setProductPage((page) => Math.min(productPageCount, page + 1))} disabled={productPage >= productPageCount} aria-label="Halaman berikutnya"><i className="bi bi-chevron-right" aria-hidden="true" /></button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -926,6 +1352,16 @@ export default function AdminClient({
             <div className="admin-view">
             <div className="admin-card">
               <div className="admin-card-header">
+                <div className="admin-toolbar-search">
+                  <input
+                    type="text"
+                    className="admin-search-input"
+                    placeholder="Cari judul dokumentasi acara..."
+                    value={gallerySearchQuery}
+                    onChange={(e) => setGallerySearchQuery(e.target.value)}
+                  />
+                </div>
+
                 <div className="admin-toolbar-filter">
                   <span style={{ fontSize: '11px', color: '#64748b', fontWeight: 600 }}>TIPE TENDA:</span>
                   <select
@@ -948,66 +1384,95 @@ export default function AdminClient({
                     <tr>
                       <th style={{ width: '80px' }}>Foto</th>
                       <th>Judul Foto</th>
+                      <th>Tanggal Acara</th>
                       <th>Tipe Tenda</th>
-                      <th>Tautan Instagram</th>
-                      <th>Sorotan (Featured)</th>
-                      <th style={{ textAlign: 'right' }}>Aksi</th>
+                      <th style={{ textAlign: 'center', width: '70px' }}>Tautan</th>
+                      <th style={{ textAlign: 'right', width: '90px' }}>Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredGallery.length === 0 ? (
                       <tr>
                         <td colSpan={6} style={{ textAlign: 'center', padding: '40px 20px', color: '#64748b' }}>
-                          Belum ada foto galeri untuk tipe tenda ini.
+                          Belum ada foto galeri untuk tipe tenda ini atau pencarian tidak ditemukan.
                         </td>
                       </tr>
                     ) : (
-                      filteredGallery.map((g) => (
+                      paginatedGallery.map((g) => (
                         <tr key={g.id} className={selectedRowId === g.id ? 'is-selected' : ''} onClick={() => setSelectedRowId(g.id)}>
-                          <td>
+                          <td data-label="Foto">
                             <img
                               src={g.image_url}
                               alt={g.title}
                               className="admin-product-thumb"
-                              style={{ width: '56px', height: '56px' }}
+                              style={{ width: '48px', height: '48px', objectFit: 'cover', borderRadius: '6px' }}
                             />
                           </td>
-                          <td>
-                            <strong style={{ fontSize: '13px' }}>{g.title}</strong>
+                          <td data-label="Judul Foto">
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                              <strong style={{ fontSize: '13px', color: 'var(--admin-text-main)' }}>{g.title}</strong>
+                              {g.is_featured && (
+                                <span
+                                  title="Item Sorotan / Featured"
+                                  aria-label="Item Sorotan / Featured"
+                                  style={{ display: 'inline-flex', alignItems: 'center', color: '#f59e0b', flexShrink: 0 }}
+                                >
+                                  <Star size={14} fill="#f59e0b" strokeWidth={1} />
+                                </span>
+                              )}
+                            </div>
                           </td>
-                          <td>
+                          <td data-label="Tanggal Acara">
+                            <span style={{ fontSize: '11px', color: '#475569', whiteSpace: 'nowrap' }}>
+                              {g.created_at
+                                ? new Date(g.created_at).toLocaleDateString('id-ID', {
+                                    day: 'numeric',
+                                    month: 'short',
+                                    year: 'numeric',
+                                  })
+                                : '-'}
+                            </span>
+                          </td>
+                          <td data-label="Tipe Tenda">
                             <span className="admin-badge admin-badge-neutral" style={{ textTransform: 'capitalize' }}>
                               {g.tent_type}
                             </span>
                           </td>
-                          <td>
+                          <td data-label="Tautan" style={{ textAlign: 'center' }}>
                             {g.instagram_url ? (
                               <a
                                 href={g.instagram_url}
                                 target="_blank"
                                 rel="noreferrer"
-                                style={{ fontSize: '11px', color: 'var(--admin-primary)', textDecoration: 'underline' }}
+                                className="admin-link-icon-btn"
+                                title="Buka postingan Instagram"
+                                aria-label="Buka postingan Instagram"
                               >
-                                Buka Post IG ↗
+                                <ExternalLink size={15} />
                               </a>
                             ) : (
-                              <span style={{ color: '#94a3b8', fontSize: '11px' }}>-</span>
+                              <span style={{ color: '#94a3b8', fontSize: '12px' }}>-</span>
                             )}
                           </td>
-                          <td>
-                            {g.is_featured ? (
-                              <span className="admin-badge admin-badge-warning">⭐ Featured</span>
-                            ) : (
-                              <span style={{ color: '#94a3b8', fontSize: '11px' }}>Biasa</span>
-                            )}
-                          </td>
-                          <td style={{ textAlign: 'right' }}>
+                          <td data-label="Aksi" style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
                             <button
                               type="button"
-                              className="admin-btn admin-btn-danger admin-btn-sm"
-                              onClick={() => handleDeleteGallery(g.id, g.title)}
+                              className="admin-btn admin-btn-secondary admin-btn-sm admin-btn-icon"
+                              style={{ marginRight: '6px' }}
+                              onClick={() => openEditGalleryModal(g)}
+                              title="Ubah galeri"
+                              aria-label="Ubah galeri"
                             >
-                              🗑️ Hapus
+                              <Pencil size={14} />
+                            </button>
+                            <button
+                              type="button"
+                              className="admin-btn admin-btn-danger admin-btn-sm admin-btn-icon"
+                              onClick={() => handleDeleteGallery(g.id, g.title)}
+                              title="Hapus galeri"
+                              aria-label="Hapus galeri"
+                            >
+                              <Trash2 size={14} />
                             </button>
                           </td>
                         </tr>
@@ -1015,6 +1480,63 @@ export default function AdminClient({
                     )}
                   </tbody>
                 </table>
+              </div>
+              <div className="admin-table-footer">
+                <span>
+                  Menampilkan {filteredGallery.length ? (galleryPage - 1) * galleryPageSize + 1 : 0}–
+                  {Math.min(galleryPage * galleryPageSize, filteredGallery.length)} dari {filteredGallery.length} foto
+                </span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ fontSize: '10px', color: '#64748b' }}>Baris:</span>
+                    <select
+                      className="admin-select"
+                      style={{ padding: '2px 8px', fontSize: '11px', height: '26px', minWidth: 'auto', background: '#fff' }}
+                      value={galleryPageSizeMode}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setGalleryPageSizeMode(val);
+                        if (val !== 'auto') setGalleryPageSize(Number(val));
+                        setGalleryPage(1);
+                      }}
+                      title="Pilih jumlah baris per halaman"
+                    >
+                      <option value="auto">Auto ({galleryPageSize})</option>
+                      <option value="5">5</option>
+                      <option value="8">8</option>
+                      <option value="10">10</option>
+                      <option value="15">15</option>
+                    </select>
+                  </div>
+                  <div className="admin-pagination" aria-label="Halaman galeri">
+                    <button
+                      type="button"
+                      onClick={() => setGalleryPage((page) => Math.max(1, page - 1))}
+                      disabled={galleryPage === 1}
+                      aria-label="Halaman sebelumnya"
+                    >
+                      <i className="bi bi-chevron-left" aria-hidden="true" />
+                    </button>
+                    {visibleGalleryPages.map((page) => (
+                      <button
+                        key={page}
+                        type="button"
+                        className={galleryPage === page ? 'active' : ''}
+                        onClick={() => setGalleryPage(page)}
+                      >
+                        {page}
+                      </button>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => setGalleryPage((page) => Math.min(galleryPageCount, page + 1))}
+                      disabled={galleryPage >= galleryPageCount}
+                      aria-label="Halaman berikutnya"
+                    >
+                      <i className="bi bi-chevron-right" aria-hidden="true" />
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
             </div>
@@ -1368,46 +1890,20 @@ export default function AdminClient({
                             onChange={(e) => updateColorRow(idx, 'color_name', e.target.value)}
                           />
                         </div>
-
-                        <div className="admin-form-group">
-                          <label className="admin-form-label">URL Foto / Unggah Langsung</label>
-                          <div className="admin-color-upload-row">
-                            <input
-                              type="text"
-                              className="admin-form-input"
-                              placeholder="https://images.unsplash.com/... atau unggah"
-                              value={colorItem.image_url || ''}
-                              onChange={(e) => updateColorRow(idx, 'image_url', e.target.value)}
-                              style={{ flex: 1 }}
-                            />
-                            <label
-                              className="admin-btn admin-btn-secondary admin-btn-sm admin-color-upload"
-                              style={{ whiteSpace: 'nowrap', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
-                            >
-                              📁 Upload
-                              <input
-                                type="file"
-                                accept="image/jpeg,image/png,image/webp"
-                                style={{ display: 'none' }}
-                                onChange={(e) => handleColorImageUpload(idx, e.target.files?.[0])}
-                              />
-                            </label>
-                          </div>
-                        </div>
                       </div>
 
-                      {colorItem.image_url && (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '4px' }}>
-                          <img
-                            src={colorItem.image_url}
-                            alt="Pratinjau"
-                            style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px', border: '1px solid #cbd5e1' }}
-                          />
-                          <span style={{ fontSize: '10px', color: '#64748b' }}>
-                            Pratinjau visual untuk varian {colorItem.color_name || 'ini'}
-                          </span>
-                        </div>
-                      )}
+                      <div className="admin-form-group" style={{ marginTop: '10px' }}>
+                        <label className="admin-form-label">Foto Varian</label>
+                        <ImageDropzone
+                          previewUrl={colorItem.previewUrl || colorItem.image_url}
+                          hasPendingFile={Boolean(colorItem.file)}
+                          onFileSelect={(file) => handleColorImageSelect(idx, file)}
+                          onRemove={() => handleColorImageRemove(idx)}
+                          height="130px"
+                          label="Tarik & lepas foto varian ke sini, atau"
+                          sublabel="klik untuk memilih (upload otomatis saat klik Simpan)"
+                        />
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -1445,7 +1941,7 @@ export default function AdminClient({
         <div className="admin-modal-backdrop" onClick={() => setGalleryModalOpen(false)}>
           <div className="admin-modal-panel" style={{ maxWidth: '560px' }} onClick={(e) => e.stopPropagation()}>
             <div className="admin-modal-head">
-              <h3>Tambah Dokumentasi Galeri</h3>
+              <h3>{editingGallery ? 'Ubah Dokumentasi Galeri' : 'Tambah Dokumentasi Galeri'}</h3>
               <button
                 type="button"
                 className="admin-modal-close"
@@ -1471,6 +1967,17 @@ export default function AdminClient({
 
                 <div className="admin-form-row">
                   <div className="admin-form-group">
+                    <label className="admin-form-label">Tanggal Pelaksanaan Acara *</label>
+                    <input
+                      type="date"
+                      required
+                      className="admin-form-input"
+                      value={galleryForm.event_date}
+                      onChange={(e) => setGalleryForm({ ...galleryForm, event_date: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="admin-form-group">
                     <label className="admin-form-label">Jenis Tenda *</label>
                     <select
                       className="admin-form-select"
@@ -1483,56 +1990,32 @@ export default function AdminClient({
                       <option value="piramid">Piramid</option>
                     </select>
                   </div>
-
-                  <div className="admin-form-group" style={{ justifyContent: 'center' }}>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', marginTop: '18px' }}>
-                      <input
-                        type="checkbox"
-                        checked={galleryForm.is_featured}
-                        onChange={(e) => setGalleryForm({ ...galleryForm, is_featured: e.target.checked })}
-                        style={{ width: '16px', height: '16px' }}
-                      />
-                      <span style={{ fontSize: '13px', fontWeight: 600 }}>Tampilkan sebagai Sorotan</span>
-                    </label>
-                  </div>
                 </div>
 
                 <div className="admin-form-group">
-                  <label className="admin-form-label">URL Foto / Unggah Langsung *</label>
-                  <div style={{ display: 'flex', gap: '8px' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
                     <input
-                      type="url"
-                      required
-                      className="admin-form-input"
-                      placeholder="https://images.unsplash.com/... atau klik unggah"
-                      value={galleryForm.image_url}
-                      onChange={(e) => setGalleryForm({ ...galleryForm, image_url: e.target.value })}
-                      style={{ flex: 1 }}
+                      type="checkbox"
+                      checked={galleryForm.is_featured}
+                      onChange={(e) => setGalleryForm({ ...galleryForm, is_featured: e.target.checked })}
+                      style={{ width: '16px', height: '16px' }}
                     />
-                    <label
-                      className="admin-btn admin-btn-secondary"
-                      style={{ whiteSpace: 'nowrap', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
-                    >
-                      📁 Unggah
-                      <input
-                        type="file"
-                        accept="image/jpeg,image/png,image/webp"
-                        style={{ display: 'none' }}
-                        onChange={(e) => handleGalleryImageUpload(e.target.files?.[0])}
-                      />
-                    </label>
-                  </div>
+                    <span style={{ fontSize: '13px', fontWeight: 600 }}>Tampilkan sebagai Sorotan (Featured)</span>
+                  </label>
                 </div>
 
-                {galleryForm.image_url && (
-                  <div style={{ marginTop: '4px' }}>
-                    <img
-                      src={galleryForm.image_url}
-                      alt="Pratinjau galeri"
-                      style={{ width: '100%', height: '180px', objectFit: 'cover', borderRadius: '6px' }}
-                    />
-                  </div>
-                )}
+                <div className="admin-form-group">
+                  <label className="admin-form-label">Foto Galeri *</label>
+                  <ImageDropzone
+                    previewUrl={galleryForm.previewUrl || galleryForm.image_url}
+                    hasPendingFile={Boolean(galleryForm.file)}
+                    onFileSelect={handleGalleryImageSelect}
+                    onRemove={handleGalleryImageRemove}
+                    height="200px"
+                    label="Tarik & lepas foto galeri ke sini, atau"
+                    sublabel="klik untuk memilih (upload otomatis saat klik Simpan)"
+                  />
+                </div>
 
                 <div className="admin-form-group">
                   <label className="admin-form-label">Tautan Postingan Instagram (Opsional)</label>
@@ -1559,7 +2042,11 @@ export default function AdminClient({
                   disabled={submittingGallery}
                   className="admin-btn admin-btn-primary"
                 >
-                  {submittingGallery ? 'Menyimpan...' : 'Simpan Foto Galeri'}
+                  {submittingGallery
+                    ? 'Menyimpan...'
+                    : editingGallery
+                    ? 'Simpan Perubahan'
+                    : 'Simpan Foto Galeri'}
                 </button>
               </div>
             </form>

@@ -20,18 +20,24 @@ export async function createGalleryItemAction(data: GalleryFormInput): Promise<A
       };
     }
 
-    const { title, tent_type, image_url, instagram_url, is_featured } = validated.data;
+    const { title, tent_type, image_url, instagram_url, is_featured, created_at } = validated.data;
     const { supabase } = await requireAdmin();
+
+    const insertPayload: Record<string, any> = {
+      title,
+      tent_type,
+      image_url,
+      instagram_url: instagram_url || null,
+      is_featured: is_featured ?? false,
+    };
+
+    if (created_at) {
+      insertPayload.created_at = created_at;
+    }
 
     const { data: item, error: insertError } = await supabase
       .from('gallery_items')
-      .insert({
-        title,
-        tent_type,
-        image_url,
-        instagram_url: instagram_url || null,
-        is_featured: is_featured ?? false,
-      })
+      .insert(insertPayload)
       .select('id')
       .single();
 
@@ -46,6 +52,62 @@ export async function createGalleryItemAction(data: GalleryFormInput): Promise<A
     return { success: true, data: { id: item.id } };
   } catch (error: any) {
     return { success: false, error: error?.message || 'Terjadi kesalahan sistem saat menyimpan item galeri.' };
+  }
+}
+
+/**
+ * Server Action: Memperbarui item galeri yang sudah ada
+ */
+export async function updateGalleryItemAction(
+  id: string,
+  data: GalleryFormInput
+): Promise<ActionResponse> {
+  try {
+    if (!id) {
+      return { success: false, error: 'ID item galeri tidak ditemukan.' };
+    }
+
+    const validated = GalleryFormSchema.safeParse(data);
+    if (!validated.success) {
+      const flattened = validated.error.flatten();
+      return {
+        success: false,
+        error: 'Validasi form galeri gagal.',
+        fieldErrors: flattened.fieldErrors as Record<string, string[]>,
+      };
+    }
+
+    const { title, tent_type, image_url, instagram_url, is_featured, created_at } = validated.data;
+    const { supabase } = await requireAdmin();
+
+    const updatePayload: Record<string, any> = {
+      title,
+      tent_type,
+      image_url,
+      instagram_url: instagram_url || null,
+      is_featured: is_featured ?? false,
+    };
+
+    if (created_at) {
+      updatePayload.created_at = created_at;
+    }
+
+    const { error: updateError } = await supabase
+      .from('gallery_items')
+      .update(updatePayload)
+      .eq('id', id);
+
+    if (updateError) {
+      return { success: false, error: `Gagal memperbarui item galeri: ${updateError.message}` };
+    }
+
+    // On-demand cache invalidation
+    revalidatePath('/galeri');
+    revalidatePath('/');
+
+    return { success: true, data: { id } };
+  } catch (error: any) {
+    return { success: false, error: error?.message || 'Terjadi kesalahan sistem saat memperbarui item galeri.' };
   }
 }
 

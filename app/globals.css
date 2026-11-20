@@ -18,3 +18,8 @@ html, body { min-height: 100%; }
 .catalog-editor-dialog input, .catalog-editor-dialog select, .catalog-editor-dialog textarea { width: 100%; border: 1px solid var(--line); padding: 11px; background: #fff; color: var(--ink); font: 11px var(--sans); }
 .catalog-editor-dialog textarea { resize: vertical; }
 @keyframes modal-fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+.login-page > .site-header,
+.login-page > .mobile-nav {
+  display: none;
+}
